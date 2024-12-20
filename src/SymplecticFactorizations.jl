@@ -1,7 +1,7 @@
 module SymplecticFactorizations
 
 import LinearAlgebra
-using LinearAlgebra: Diagonal, qr, eigvals, Factorization, svd, require_one_based_indexing
+using LinearAlgebra: mul!, Diagonal, qr, Factorization, svd, require_one_based_indexing
 
 export 
     # symplectic stuff

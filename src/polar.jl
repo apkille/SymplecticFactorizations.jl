@@ -21,3 +21,11 @@ function polar(x::AbstractMatrix{T}) where {T}
     mul!(O, fact.U, fact.Vt)
     return Polar{T}(P, O)
 end
+
+function Base.show(io::IO, mime::MIME{Symbol("text/plain")}, F::Polar{<:Any,<:AbstractArray,<:AbstractArray})
+    Base.summary(io, F); println(io)
+    println(io, "P factor:")
+    Base.show(io, mime, F.P)
+    println(io, "\nO factor:")
+    Base.show(io, mime, F.O)
+end
