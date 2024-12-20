@@ -6,6 +6,9 @@ end
 struct PairForm{N<:Int} <: SymplecticForm{N}
     n::N
 end
+function Base.show(io::IO, x::SymplecticForm)
+    print(io, "$(nameof(typeof(x)))($(x.n))")
+end
 function symplecticform(f::BlockForm)
     N = f.n
     Omega = zeros(2*N, 2*N)
