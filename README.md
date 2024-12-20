@@ -29,7 +29,7 @@ julia> S = randsymplectic(J)
   -1.76113   0.256758   1.67699   0.322509
  -23.9402    8.67196   19.8991   -8.98003
 
-julia> julia> issymplectic(J, S, atol=1e-10)
+julia> issymplectic(J, S, atol=1e-10)
 true
 ```
 Similar methods exist for `PairForm(n)`, which corresponds to the symplectic form equal to the direct
