@@ -14,7 +14,7 @@ Base.iterate(F::Polar, ::Val{:O}) = (F.O, Val(:done))
 Base.iterate(F::Polar, ::Val{:done}) = nothing
 
 function polar(x::AbstractMatrix{T}) where {T}
-    fact = svd(x, full = false)
+    fact = svd(x)
     dims = size(x)
     P, O = zeros(T, dims), zeros(T, dims)
     copyto!(P, fact.V * Diagonal(fact.S) * fact.Vt)
