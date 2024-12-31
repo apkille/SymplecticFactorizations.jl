@@ -1,4 +1,4 @@
-@testitem "symplectic features" begin
+@testitem "polar decomposition" begin
     using SymplecticFactorizations
     using LinearAlgebra: adjoint, isposdef, eigvals
 
