@@ -14,7 +14,7 @@ Base.iterate(F::Takagi, ::Val{:S}) = (F.S, Val(:done))
 Base.iterate(F::Takagi, ::Val{:done}) = nothing
 
 function takagi(x::AbstractMatrix{T}) where {T<:Union{Real,Complex}}
-    fact = svd(x)
+    fact = svd(Symmetric(x))
     Tt = T <: Complex ? T : ComplexF64
     Q = zeros(Tt, size(x))
     mul!(Q, fact.U, sqrt(conj(transpose(fact.U) * fact.V)))
