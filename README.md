@@ -1,6 +1,7 @@
 # SymplecticFactorizations
 
-[![Build Status](https://github.com/apkille/SymplecticFactorizations.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/apkille/SymplecticFactorizations.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![Build status (Github Actions)](https://github.com/apkille/SymplecticFactorizations.jl/workflows/CI/badge.svg)](https://github.com/apkille/SymplecticFactorizations.jl/actions)
+[![codecov](https://codecov.io/github/apkille/SymplecticFactorizations.jl/graph/badge.svg?token=JWMOD4FY6P)](https://codecov.io/github/apkille/SymplecticFactorizations.jl)
 
 SymplecticFactorizations is a package for computing special decompositions
 of symplectic matrices. 
