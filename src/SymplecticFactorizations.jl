@@ -19,8 +19,6 @@ include("polar.jl")
 
 include("takagi.jl")
 
-include("euler.jl")
-
 include("williamson.jl")
 
 end
