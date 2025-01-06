@@ -36,23 +36,26 @@ true
 Similar methods exist for `PairForm(n)`, which corresponds to the symplectic form equal to the direct
 sum of `[0 1; -1 0]`.
 
-To compute the symplectic polar decomposition of `S`, which produces a product of a positive-definite symmetric symplectic matrix `P` and orthogonal symplectic matrix `O`, call `polar`:
+To compute the symplectic polar decomposition of `S`, which produces a product of an orthogonal symplectic matrix `O` and positive-definite symmetric symplectic matrix `P`, call `polar`:
 
 ```julia
 julia> F = polar(S)
 Polar{Float64, Matrix{Float64}, Matrix{Float64}}
-P factor:
-4×4 Matrix{Float64}:
-  30.7533  -10.957    -25.8009   10.7173
- -10.957     4.93081    9.40483  -4.22713
- -25.8009    9.40483   21.846    -8.72895
-  10.7173   -4.22713   -8.72895   4.87129
 O factor:
 4×4 Matrix{Float64}:
- -0.151294   0.863879     0.480235  -0.0140828
- -0.259956  -0.503439     0.823959   0.00799922
- -0.480235   0.0140828   -0.151294   0.863879
- -0.823959  -0.00799922  -0.259956  -0.503439
+ -0.151275   0.863869    0.480258  -0.0140919
+ -0.259969  -0.503456    0.823944   0.00798633
+ -0.480217   0.0140998  -0.151275   0.863892
+ -0.823968  -0.0079728  -0.259969  -0.503417
+P factor:
+4×4 Matrix{Float64}:
+  30.7533  -10.957    -25.8008   10.7173
+ -10.957     4.9308     9.40484  -4.22713
+ -25.8008    9.40484   21.846    -8.72893
+  10.7173   -4.22713   -8.72893   4.87128
+
+julia> isapprox(F.O * F.P, S, atol = 1e-10)
+true
 ```
 
 To compute the Williamson decomposition of a positive definite matrix `V`, which finds a congruence relation between a symplectic matrix `S` and a diagonal matrix containing the symplectic eigenvalues `spectrum`, call `williamson`:
