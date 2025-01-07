@@ -2,6 +2,6 @@
     using Documenter
     using SymplecticFactorizations
 
-    DocMeta.setdocmeta!(SymplecticFactorizations, :DocTestSetup, :(using SymplecticFactorizations); recursive=true)
+    DocMeta.setdocmeta!(SymplecticFactorizations, :DocTestSetup, :(using SymplecticFactorizations, LinearAlgebra); recursive=true)
     doctest(SymplecticFactorizations)
 end
