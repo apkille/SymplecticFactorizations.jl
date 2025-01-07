@@ -3,10 +3,16 @@
 [![Build status (Github Actions)](https://github.com/apkille/SymplecticFactorizations.jl/workflows/CI/badge.svg)](https://github.com/apkille/SymplecticFactorizations.jl/actions)
 [![codecov](https://codecov.io/github/apkille/SymplecticFactorizations.jl/graph/badge.svg?token=JWMOD4FY6P)](https://codecov.io/github/apkille/SymplecticFactorizations.jl)
 
-SymplecticFactorizations is a package for computing special decompositions
+SymplecticFactorizations is a Julia package for computing special decompositions
 of symplectic matrices. 
 
 ## Usage
+
+To install SymplecticFactorizations.jl, start Julia and run the following command:
+
+```julia
+] add SymplecticFactorizations
+```
 
 Compute a random symplectic matrix `S` by specifying the symplectic form type:
 
