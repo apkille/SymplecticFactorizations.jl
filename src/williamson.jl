@@ -10,6 +10,32 @@ via `F.S` and `F.spectrum`.
 Iterating the decomposition produces the components `S` and `spectrum`.
 
 # Examples
+```jldoctest
+julia> V = [7. 2.; 2. 1.]
+2×2 Matrix{Float64}:
+ 7.0  2.0
+ 2.0  1.0
+
+julia> isposdef(V)
+true
+
+julia> F = williamson(BlockForm(1), V)
+Williamson{Float64, Matrix{Float64}, Vector{Float64}}
+S factor:
+2×2 Matrix{Float64}:
+ 0.448828  -1.95959
+ 0.61311   -0.448828
+symplectic spectrum:
+1-element Vector{Float64}:
+ 1.7320508075688772
+
+julia> isapprox(F.S * V * F.S', Diagonal(repeat(F.spectrum, 2)))
+true
+
+julia> S, spectrum = F; # destructuring via iteration
+
+julia> S == F.S && spectrum == F.spectrum
+true
 ```
 """
 struct Williamson{T,M<:AbstractArray{T},N<:AbstractVector{T}} <: Factorization{T}
@@ -27,6 +53,45 @@ Base.iterate(F::Williamson) = (F.S, Val(:spectrum))
 Base.iterate(F::Williamson, ::Val{:spectrum}) = (F.spectrum, Val(:done))
 Base.iterate(F::Williamson, ::Val{:done}) = nothing
 
+"""
+    williamson(V::AbstractMatrix) -> Williamson
+
+Compute the williamson decomposition of a positive-definite matrix `V` and return a `Williamson` object.
+
+A symplectic matrix `S` and symplectic spectrum `spectrum` can be obtained
+via `F.S` and `F.spectrum`.
+
+Iterating the decomposition produces the components `S` and `spectrum`.
+
+# Examples
+```jldoctest
+julia> V = [7. 2.; 2. 1.]
+2×2 Matrix{Float64}:
+ 7.0  2.0
+ 2.0  1.0
+
+julia> isposdef(V)
+true
+
+julia> F = williamson(BlockForm(1), V)
+Williamson{Float64, Matrix{Float64}, Vector{Float64}}
+S factor:
+2×2 Matrix{Float64}:
+ 0.448828  -1.95959
+ 0.61311   -0.448828
+symplectic spectrum:
+1-element Vector{Float64}:
+ 1.7320508075688772
+
+julia> isapprox(F.S * V * F.S', Diagonal(repeat(F.spectrum, 2)))
+true
+
+julia> S, spectrum = F; # destructuring via iteration
+
+julia> S == F.S && spectrum == F.spectrum
+true
+```
+"""
 function williamson(form::PairForm, x::AbstractMatrix{T}) where {T<:Real}
     J = symplecticform(form)
     spectrum = filter(i -> i > 0, imag.(eigvals(J * x, sortby = λ -> abs(λ))))
