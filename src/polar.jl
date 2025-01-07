@@ -21,14 +21,14 @@ true
 
 julia> F = polar(S)
 Polar{Float64, Matrix{Float64}, Matrix{Float64}}
-P factor:
-2×2 Matrix{Float64}:
- 0.894427  0.447214
- 0.447214  1.34164
 O factor:
 2×2 Matrix{Float64}:
   0.894427  0.447214
  -0.447214  0.894427
+P factor:
+2×2 Matrix{Float64}:
+ 0.894427  0.447214
+ 0.447214  1.34164
 
 julia> isapprox(F.O * F.P, S)
 true
@@ -77,14 +77,14 @@ true
 
 julia> F = polar(S)
 Polar{Float64, Matrix{Float64}, Matrix{Float64}}
-P factor:
-2×2 Matrix{Float64}:
- 0.894427  0.447214
- 0.447214  1.34164
 O factor:
 2×2 Matrix{Float64}:
   0.894427  0.447214
  -0.447214  0.894427
+P factor:
+2×2 Matrix{Float64}:
+ 0.894427  0.447214
+ 0.447214  1.34164
 
 julia> isapprox(F.O * F.P, S)
 true
