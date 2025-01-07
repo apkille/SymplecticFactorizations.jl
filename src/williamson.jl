@@ -1,3 +1,17 @@
+"""
+    Williamson <: Factorization
+
+Matrix factorization type of the williamson decomposition of a positive-definite matrix `V`.
+This is the return type of [`williamson(_)`](@ref), the corresponding matrix factorization function.
+
+If `F::Williamson` is the factorization object, `S` and `spectrum` can be obtained
+via `F.S` and `F.spectrum`.
+
+Iterating the decomposition produces the components `S` and `spectrum`.
+
+# Examples
+```
+"""
 struct Williamson{T,M<:AbstractArray{T},N<:AbstractVector{T}} <: Factorization{T}
     S::M
     spectrum::N
