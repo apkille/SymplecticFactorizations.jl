@@ -1,38 +1,41 @@
-abstract type SymplecticForm{N} end
+struct Symplectic{F<:SymplecticForm, T<:Number, D<:AbstractMatrix{<:T}} <: AbstractMatrix{T}
+    form::F
+    data::D
+    function Symplectic{F,T,D}(form, data) where {F<:SymplecticForm,T<:Number,D<:AbstractMatrix{<:T}}
+        LinearAlgebra.require_one_based_indexing(data)
+        new{F,T,D}(form, data)
+    end
+end
 
-struct BlockForm{N<:Int} <: SymplecticForm{N}
-    n::N
-end
-struct PairForm{N<:Int} <: SymplecticForm{N}
-    n::N
-end
-function Base.show(io::IO, x::SymplecticForm)
-    print(io, "$(nameof(typeof(x)))($(x.n))")
-end
-function symplecticform(f::BlockForm)
-    N = f.n
-    Omega = zeros(2*N, 2*N)
-    @inbounds for i in 1:N, j in N:2*N
-        if isequal(i, j-N)
-            Omega[i,j] = 1.0
-        end
-    end
-    @inbounds for i in N:2*N, j in 1:N
-        if isequal(i-N,j)
-            Omega[i, j] = -1.0
-        end
-    end
-    return Omega
-end
-function symplecticform(f::PairForm)
-    N = f.n
-    Omega = zeros(2*N, 2*N)
-    @inbounds for i in Base.OneTo(N)
-        Omega[2*i-1, 2*i] = 1.0
-        Omega[2*i, 2*i-1] = -1.0
-    end
-    return Omega
-end
+"""
+    Symplectic(J::SymplecticForm, S::AbstractMatrix) <: AbstractMatrix
+    Symplectic(J::SymplecticForm, S::AbstractMatrix; atol = 1e-8, rtol = atol) <: AbstractMatrix
+
+Construct a wrapper of a symplectic matrix `S` with its corresponding symplectic basis
+defined by the symplectic form `J`.
+"""
+Symplectic(form::F, data::D) where {F<:SymplecticForm, D<:AbstractMatrix} = Symplectic{F,eltype(D),D}(form, data)
+Symplectic(x::Symplectic) = x
+
+Base.size(x::Symplectic) = size(x.data)
+Base.size(x::Symplectic, n) = size(x.data, n)
+Base.axes(x::Symplectic) = axes(x.data)
+Base.eltype(x::Symplectic) = eltype(x.data)
+
+Base.@propagate_inbounds Base.getindex(x::Symplectic, i::Int) = x.data[i]
+Base.@propagate_inbounds Base.getindex(x::Symplectic, i::Int, j::Int) = x.data[i,j]
+Base.@propagate_inbounds Base.getindex(x::Symplectic, I::Vararg{Int,N}) where {N} = getindex(x.data, I)
+Base.@propagate_inbounds Base.setindex!(x::Symplectic, v, i::Int) = setindex!(x.data, v, i)
+Base.@propagate_inbounds Base.setindex!(x::Symplectic, v, I::Vararg{Int, N}) where {N} = setindex!(x, v, I)
+
+Base.similar(x::Symplectic, ::Type{T}) where {T} = similar(x.data, T)
+Base.similar(x::Symplectic, dims::Dims{N}) where {N} = similar(x.data, dims)
+Base.similar(x::Symplectic, ::Type{T}, dims::Dims{N}) where {T,N} = similar(x.data, T, dims)
+
+Base.Matrix(x::Symplectic) = Matrix(x.data)
+Base.Array(x::Symplectic) = Matrix(x)
+Base.AbstractMatrix{T}(x::Symplectic) where {T} = Symplectic(x.form, AbstractMatrix{T}(x.data))
+Base.parent(x::Symplectic) = x.data
 
 function issymplectic(form::SymplecticForm, x::T; atol::R1 = 0, rtol::R2 = atol) where {T,R1<:Real,R2<:Real}
     omega = symplecticform(form)
