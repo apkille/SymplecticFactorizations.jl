@@ -1,5 +1,9 @@
 # News
 
+## v0.1.3 - dev
+
+- Add `::Type{Symplectic}` to method arguments to create Symplectic matrix types.
+
 ## v0.1.2 - 2025-01-10
 
 - Add `Symplectic` matrix type.
