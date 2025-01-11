@@ -16,6 +16,12 @@
         S_block = Symplectic(J, data_block)
         S_pair = Symplectic(Omega, data_pair)
 
+        @test Symplectic(S_block) == S_block && Symplectic(S_pair) == S_pair
+        @test eltype(S_block) == eltype(data_block) && eltype(S_pair) == eltype(data_pair)
+
+        @test isequal(S_block, copy(S_block)) && isequal(S_pair, copy(S_pair))
+        @test isapprox(S_block, copy(S_block)) && isapprox(S_pair, copy(S_pair))
+
         @test size(S_block) == size(data_block) && size(S_pair) == size(data_pair)
         @test size(S_block, 1) == size(data_block, 1) && size(S_pair, 1) == size(data_pair, 1)
         @test axes(S_block) == axes(data_block) && axes(S_pair) == axes(data_pair)
