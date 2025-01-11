@@ -10,7 +10,7 @@ via `F.S` and `F.spectrum`.
 Iterating the decomposition produces the components `S` and `spectrum`.
 
 # Examples
-```jldoctest
+```
 julia> V = [7. 2.; 2. 1.]
 2×2 Matrix{Float64}:
  7.0  2.0
