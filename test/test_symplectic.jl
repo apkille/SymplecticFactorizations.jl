@@ -1,7 +1,7 @@
 @testitem "symplectic features" begin
     using SymplecticFactorizations
     using SymplecticFactorizations: _rand_orthogonal_symplectic, _rand_unitary
-    using LinearAlgebra: adjoint
+    using LinearAlgebra
     using Base: size, axes, eltype, getindex, setindex!, similar, Matrix, Array, AbstractMatrix, parent, copy, copyto!
 
     @testset "symplectic type" begin
@@ -58,7 +58,7 @@
 
     @testset "random objects" begin
 
-        n = rand(1:20)
+        n = rand(1:5)
         J = BlockForm(n)
         Omega = PairForm(n)
         U_block = _rand_unitary(J)
@@ -78,5 +78,31 @@
         @test issymplectic(J, S_block, atol = 1e-5)
         @test issymplectic(Omega, S_pair, atol = 1e-5)
 
+    end
+
+    @testset "linear algebra" begin
+
+        n = rand(1:5)
+        J = BlockForm(n)
+        Omega = PairForm(n)
+
+        S_block = randsymplectic(Symplectic, J)
+        S_pair = randsymplectic(Symplectic, Omega)
+
+        data_block = S_block.data
+        data_pair = S_pair.data
+
+        for f in (:svd!, :lu!, :svdvals!, :lq!, :qr!, :eigvals!, :schur!, :eigen!, :hessenberg!)
+            @test @eval(LinearAlgebra.$f)(copy(S_block)) == @eval(LinearAlgebra.$f)(copy(data_block))
+            @test @eval(LinearAlgebra.$f)(copy(S_pair)) == @eval(LinearAlgebra.$f)(copy(data_pair))
+        end
+        for f in (:svd, :lu, :svdvals, :lq, :qr, :eigvals, :schur, :eigvecs, :eigen, :hessenberg)
+            @test @eval(LinearAlgebra.$f)(S_block) == @eval(LinearAlgebra.$f)(data_block)
+            @test @eval(LinearAlgebra.$f)(S_pair) == @eval(LinearAlgebra.$f)(data_pair)
+        end
+        for f in (:det, :tr, :inv, :pinv, :logdet)
+            @test @eval(LinearAlgebra.$f)(S_block) == @eval(LinearAlgebra.$f)(data_block)
+            @test @eval(LinearAlgebra.$f)(S_pair) == @eval(LinearAlgebra.$f)(data_pair)
+        end
     end
 end

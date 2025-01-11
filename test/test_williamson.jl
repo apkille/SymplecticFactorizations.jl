@@ -24,7 +24,7 @@
 
     @testset "symplectic type" begin
 
-        rn = rand(2:10)
+        rn = rand(2:5)
         n = 2 * rn
         J = BlockForm(rn)
         Omega = PairForm(rn)

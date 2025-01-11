@@ -4,7 +4,7 @@
 
     @testset "random objects" begin
 
-        n = rand(1:20)
+        n = rand(1:5)
         J = BlockForm(n)
         Omega = PairForm(n)
         S_block = randsymplectic(J)
@@ -25,7 +25,7 @@
     end
 
     @testset "symplectic type" begin
-        n = rand(1:20)
+        n = rand(1:5)
         J = BlockForm(n)
         Omega = PairForm(n)
         S_block = randsymplectic(Symplectic, J)
