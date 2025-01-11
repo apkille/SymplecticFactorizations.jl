@@ -1,5 +1,9 @@
 # News
 
+## v0.1.2 - 2025-01-10
+
+- Add `Symplectic` matrix type.
+
 ## v0.1.1 - 2025-01-07
 
 - Add docstrings for `williamson` and `polar`.
