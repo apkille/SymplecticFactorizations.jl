@@ -21,4 +21,27 @@
         @test isapprox(S_pair * V * transpose(S_pair), Matrix(Diagonal(repeat(spectrum_pair, inner = 2))), atol = 1e-5)
         @test isapprox(S_block * V * transpose(S_block), Matrix(Diagonal(repeat(spectrum_block, 2))), atol = 1e-5)
     end
+
+    @testset "symplectic type" begin
+
+        rn = rand(2:10)
+        n = 2 * rn
+        J = BlockForm(rn)
+        Omega = PairForm(rn)
+        X = rand(n, n)
+        V = X' * X
+
+        F_block = williamson(Symplectic, J, V)
+        S_block, spectrum_block = williamson(Symplectic, J, V)
+
+        @test F_block.S == S_block && F_block.spectrum == spectrum_block
+        F_pair = williamson(Symplectic, Omega, V)
+        S_pair, spectrum_pair = williamson(Symplectic, Omega, V)
+        @test F_pair.S == S_pair && F_pair.spectrum == spectrum_pair
+
+        @test S_block isa Symplectic && S_pair isa Symplectic
+        @test issymplectic(S_pair, atol = 1e-5) && issymplectic(S_block, atol = 1e-5)
+        @test isapprox(S_pair * V * transpose(S_pair), Matrix(Diagonal(repeat(spectrum_pair, inner = 2))), atol = 1e-5)
+        @test isapprox(S_block * V * transpose(S_block), Matrix(Diagonal(repeat(spectrum_block, 2))), atol = 1e-5)
+    end
 end
