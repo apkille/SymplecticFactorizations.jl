@@ -54,7 +54,8 @@ Base.iterate(F::Williamson, ::Val{:spectrum}) = (F.spectrum, Val(:done))
 Base.iterate(F::Williamson, ::Val{:done}) = nothing
 
 """
-    williamson(V::AbstractMatrix) -> Williamson
+    williamson(form::SymplecticForm, V::AbstractMatrix) -> Williamson
+    williamson(::Symplectic, form::SymplecticForm, V::AbstractMatrix) -> Williamson
 
 Compute the williamson decomposition of a positive-definite matrix `V` and return a `Williamson` object.
 
@@ -92,7 +93,15 @@ julia> S == F.S && spectrum == F.spectrum
 true
 ```
 """
-function williamson(form::PairForm, x::AbstractMatrix{T}) where {T<:Real}
+function williamson(form::F, x::AbstractMatrix{T}) where {F<:SymplecticForm, T<:Real}
+    S, spectrum = _williamson(form, x)
+    return Williamson{T}(S, spectrum)
+end
+function williamson(::Type{Symplectic}, form::F, x::AbstractMatrix{T}) where {F<:SymplecticForm, T<:Real}
+    S, spectrum = _williamson(form, x)
+    return Williamson{T}(Symplectic(form, S), spectrum)
+end
+function _williamson(form::PairForm, x::AbstractMatrix{T}) where {T<:Real}
     J = symplecticform(form)
     spectrum = filter(i -> i > 0, imag.(eigvals(J * x, sortby = λ -> abs(λ))))
     D = Diagonal(repeat(spectrum, inner = 2))
@@ -108,9 +117,9 @@ function williamson(form::PairForm, x::AbstractMatrix{T}) where {T<:Real}
     end
     R = real(G * U')
     S = sqrt(D) * R * sqrtV
-    return Williamson{T}(S, spectrum)
+    return S, spectrum
 end
-function williamson(form::BlockForm, x::AbstractMatrix{T}) where {T<:Real}
+function _williamson(form::BlockForm, x::AbstractMatrix{T}) where {T<:Real}
     J = symplecticform(form)
     spectrum = filter(i -> i > 0, imag.(eigvals(J * x, sortby = λ -> abs(λ))))
     D = Diagonal(repeat(spectrum, 2))
@@ -126,7 +135,7 @@ function williamson(form::BlockForm, x::AbstractMatrix{T}) where {T<:Real}
     end
     R = real(G * U')
     S = sqrt(D) * R * sqrtV
-    return Williamson{T}(S, spectrum)
+    return S, spectrum
 end
 
 function Base.show(io::IO, mime::MIME{Symbol("text/plain")}, F::Williamson{<:Any,<:AbstractArray,<:AbstractVector})
