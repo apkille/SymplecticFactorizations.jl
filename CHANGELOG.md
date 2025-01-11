@@ -3,6 +3,7 @@
 ## v0.1.2 - 2025-01-10
 
 - Add `Symplectic` matrix type.
+- Bump Julia compat to 1.10.0.
 
 ## v0.1.1 - 2025-01-07
 
