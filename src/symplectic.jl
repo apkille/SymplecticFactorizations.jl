@@ -17,6 +17,8 @@ defined by the symplectic form `J`.
 Symplectic(form::F, data::D) where {F<:SymplecticForm, D<:AbstractMatrix} = Symplectic{F,eltype(D),D}(form, data)
 Symplectic(x::Symplectic) = x
 
+Base.isequal(x::Symplectic, y::Symplectic) = x.form == y.form && x.data == y.data
+Base.isapprox(x::Symplectic, y::Symplectic) = x.form == y.form && isapprox(x.data, y.data)
 Base.size(x::Symplectic) = size(x.data)
 Base.size(x::Symplectic, n) = size(x.data, n)
 Base.axes(x::Symplectic) = axes(x.data)
@@ -24,18 +26,22 @@ Base.eltype(x::Symplectic) = eltype(x.data)
 
 Base.@propagate_inbounds Base.getindex(x::Symplectic, i::Int) = x.data[i]
 Base.@propagate_inbounds Base.getindex(x::Symplectic, i::Int, j::Int) = x.data[i,j]
-Base.@propagate_inbounds Base.getindex(x::Symplectic, I::Vararg{Int,N}) where {N} = getindex(x.data, I)
 Base.@propagate_inbounds Base.setindex!(x::Symplectic, v, i::Int) = setindex!(x.data, v, i)
-Base.@propagate_inbounds Base.setindex!(x::Symplectic, v, I::Vararg{Int, N}) where {N} = setindex!(x, v, I)
+Base.@propagate_inbounds Base.setindex!(x::Symplectic, v, i::Int, j::Int) = setindex!(x.data, v, i, j)
 
-Base.similar(x::Symplectic, ::Type{T}) where {T} = similar(x.data, T)
-Base.similar(x::Symplectic, dims::Dims{N}) where {N} = similar(x.data, dims)
-Base.similar(x::Symplectic, ::Type{T}, dims::Dims{N}) where {T,N} = similar(x.data, T, dims)
+Base.similar(x::Symplectic, ::Type{T}) where {T} = Symplectic(x.form, similar(x.data, T))
+Base.similar(x::Symplectic, dims::Dims{N}) where {N} = Symplectic(x.form, similar(x.data, dims))
+Base.similar(x::Symplectic, ::Type{T}, dims::Dims{N}) where {T,N} = Symplectic(x.form, similar(x.data, T, dims))
 
 Base.Matrix(x::Symplectic) = Matrix(x.data)
 Base.Array(x::Symplectic) = Matrix(x)
 Base.AbstractMatrix{T}(x::Symplectic) where {T} = Symplectic(x.form, AbstractMatrix{T}(x.data))
 Base.parent(x::Symplectic) = x.data
+
+Base.copy(x::Symplectic) = Symplectic(x.form, copy(x.data))
+Base.copyto!(dest::Symplectic, src::Symplectic) = (copyto!(dest.data, src.data); return dest)
+Base.copyto!(dest::Symplectic, src::AbstractMatrix) = (copyto!(dest.data, src); return dest)
+Base.copyto!(dest::AbstractMatrix, src::Symplectic) = (copyto!(dest, src.data); return dest)
 
 function issymplectic(form::SymplecticForm, x::T; atol::R1 = 0, rtol::R2 = atol) where {T,R1<:Real,R2<:Real}
     omega = symplecticform(form)
