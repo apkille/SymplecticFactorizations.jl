@@ -56,6 +56,7 @@ Base.iterate(F::Polar, ::Val{:done}) = nothing
 
 """
     polar(S::AbstractMatrix) -> Polar
+    polar(S::Symplectic) -> Polar
 
 Compute the polar decomposition of a symplectic matrix `S` and return a `Polar` object.
 
@@ -96,12 +97,20 @@ true
 ```
 """
 function polar(x::AbstractMatrix{T}) where {T}
+    O, P = _polar(x)
+    return Polar{T}(O, P)
+end
+function polar(x::Symplectic{F,T,D}) where {F<:SymplecticForm,T,D<:AbstractMatrix{T}} 
+    O, P = _polar(x.data)
+    return Polar{T}(Symplectic(x.form, O), Symplectic(x.form, P))
+end
+function _polar(x::AbstractMatrix{T}) where {T}
     fact = svd(x)
     dims = size(x)
     O, P = zeros(T, dims), zeros(T, dims)
     mul!(O, fact.U, fact.Vt)
     copyto!(P, fact.V * Diagonal(fact.S) * fact.Vt)
-    return Polar{T}(O, P)
+    return O, P
 end
 
 function Base.show(io::IO, mime::MIME{Symbol("text/plain")}, F::Polar{<:Any,<:AbstractArray,<:AbstractArray})

@@ -9,7 +9,6 @@ end
 
 """
     Symplectic(J::SymplecticForm, S::AbstractMatrix) <: AbstractMatrix
-    Symplectic(J::SymplecticForm, S::AbstractMatrix; atol = 1e-8, rtol = atol) <: AbstractMatrix
 
 Construct a wrapper of a symplectic matrix `S` with its corresponding symplectic basis
 defined by the symplectic form `J`.
@@ -43,17 +42,30 @@ Base.copyto!(dest::Symplectic, src::Symplectic) = (copyto!(dest.data, src.data);
 Base.copyto!(dest::Symplectic, src::AbstractMatrix) = (copyto!(dest.data, src); return dest)
 Base.copyto!(dest::AbstractMatrix, src::Symplectic) = (copyto!(dest, src.data); return dest)
 
-function issymplectic(form::SymplecticForm, x::T; atol::R1 = 0, rtol::R2 = atol) where {T,R1<:Real,R2<:Real}
+"""
+    issymplectic(form::Symplecticform, x::AbstractMatrix; atol=0.0, rtol=atol)
+    issymplectic(x::Symplectic; atol=0.0, rtol=atol)
+
+Return whether or not an input matrix is symplectic. Keyword arguments `atol` and `rtol`
+can be called to determine absolute and relative tolerances of the check, respectively.
+"""
+function issymplectic(form::SymplecticForm, x::T; atol::R1 = 0, rtol::R2 = atol) where {T<:AbstractMatrix,R1<:Real,R2<:Real}
     omega = symplecticform(form)
     return isapprox(x * omega * x', omega; atol = atol, rtol = rtol)
+end
+function issymplectic(x::Symplectic; atol::R1 = 0, rtol::R2 = atol) where {R1<:Real,R2<:Real}
+    omega = symplecticform(x.form)
+    return isapprox(x.data * omega * x.data', omega; atol = atol, rtol = rtol)
 end
 
 """
     randsymplectic(form::SymplecticForm)
+    randsymplectic(::Symplectic, form::SymplecticForm)
 
 Calculate a random symplectic matrix in symplectic representation defined by `basis`.
 """
 randsymplectic(form::SymplecticForm{N}) where {N<:Int} = _randsymplectic(form)
+randsymplectic(::Type{Symplectic}, form::SymplecticForm{N}) where {N<:Int} = Symplectic(form, _randsymplectic(form))
 function _randsymplectic(form::PairForm{N}) where {N<:Int}
     n = form.n
     # random Block-Messiah/Euler decomposition

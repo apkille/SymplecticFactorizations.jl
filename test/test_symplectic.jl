@@ -16,6 +16,7 @@
         S_block = Symplectic(J, data_block)
         S_pair = Symplectic(Omega, data_pair)
 
+        @test randsymplectic(Symplectic, J) isa Symplectic && randsymplectic(Symplectic, Omega) isa Symplectic
         @test Symplectic(S_block) == S_block && Symplectic(S_pair) == S_pair
         @test eltype(S_block) == eltype(data_block) && eltype(S_pair) == eltype(data_pair)
 
