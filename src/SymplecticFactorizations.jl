@@ -5,13 +5,15 @@ using LinearAlgebra: mul!, Diagonal, qr, Factorization, svd, require_one_based_i
 
 export 
     # symplectic stuff
-    issymplectic, symplecticform, BlockForm, PairForm, randsymplectic,
+    Symplectic, issymplectic, symplecticform, BlockForm, PairForm, randsymplectic,
     # polar decomposition
     polar, Polar,
     # takagi/autonne decomposition
     takagi, Takagi,
     # williamson decomposition
     williamson, Williamson
+
+include("form.jl")
 
 include("symplectic.jl")
 
