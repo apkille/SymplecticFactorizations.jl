@@ -11,7 +11,9 @@ export
     # takagi/autonne decomposition
     takagi, Takagi,
     # williamson decomposition
-    williamson, Williamson
+    williamson, Williamson,
+    # bloch-messiah/euler decomposition
+    blochmessiah, BlochMessiah
 
 include("form.jl")
 
@@ -22,5 +24,7 @@ include("polar.jl")
 include("takagi.jl")
 
 include("williamson.jl")
+
+include("blochmessiah.jl")
 
 end
