@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Full API · SymplecticFactorizations.jl</title><meta name="title" content="Full API · SymplecticFactorizations.jl"/><meta property="og:title" content="Full API · SymplecticFactorizations.jl"/><meta property="twitter:title" content="Full API · SymplecticFactorizations.jl"/><meta name="description" content="Documentation for SymplecticFactorizations.jl."/><meta property="og:description" content="Documentation for SymplecticFactorizations.jl."/><meta property="twitter:description" content="Documentation for SymplecticFactorizations.jl."/><meta property="og:url" content="https://apkille.github.io/SymplecticFactorizations.jl/API/"/><meta property="twitter:url" content="https://apkille.github.io/SymplecticFactorizations.jl/API/"/><link rel="canonical" href="https://apkille.github.io/SymplecticFactorizations.jl/API/"/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script><script src="../assets/init.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">SymplecticFactorizations.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">SymplecticFactorizations.jl</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Full API</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Full API</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/apkille/SymplecticFactorizations.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/apkille/SymplecticFactorizations.jl/blob/main/docs/src/API.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Full-API"><a class="docs-heading-anchor" href="#Full-API">Full API</a><a id="Full-API-1"></a><a class="docs-heading-anchor-permalink" href="#Full-API" title="Permalink"></a></h1><style>
+    .content table td {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+</style><h2 id="Autogenerated-API-list"><a class="docs-heading-anchor" href="#Autogenerated-API-list">Autogenerated API list</a><a id="Autogenerated-API-list-1"></a><a class="docs-heading-anchor-permalink" href="#Autogenerated-API-list" title="Permalink"></a></h2><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="SymplecticFactorizations.Polar" href="#SymplecticFactorizations.Polar"><code>SymplecticFactorizations.Polar</code></a> — <span class="docstring-category">Type</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><pre><code class="language-julia hljs">Polar &lt;: Factorization</code></pre><p>Matrix factorization type of the polar decomposition of a symplectic matrix <code>S</code>. This is the return type of <a href="#SymplecticFactorizations.polar-Union{Tuple{AbstractMatrix{T}}, Tuple{T}} where T"><code>polar(_)</code></a>, the corresponding matrix factorization function.</p><p>If <code>F::Polar</code> is the factorization object, <code>O</code> and <code>P</code> can be obtained via <code>F.O</code> and <code>F.P</code>, such that <code>S = O * P</code>.</p><p>Iterating the decomposition produces the components <code>O</code> and <code>P</code>.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; S = [1. 1.; 0. 1.]
+2×2 Matrix{Float64}:
+ 1.0  1.0
+ 0.0  1.0
+
+julia&gt; issymplectic(BlockForm(1), S)
+true
+
+julia&gt; F = polar(S)
+Polar{Float64, Matrix{Float64}, Matrix{Float64}}
+O factor:
+2×2 Matrix{Float64}:
+  0.894427  0.447214
+ -0.447214  0.894427
+P factor:
+2×2 Matrix{Float64}:
+ 0.894427  0.447214
+ 0.447214  1.34164
+
+julia&gt; isapprox(F.O * F.P, S)
+true
+
+julia&gt; O, P = F; # destructuring via iteration
+
+julia&gt; O == F.O &amp;&amp; P == F.P
+true</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/apkille/SymplecticFactorizations.jl/blob/e586a7d22192bb7ab06327fcfb9853a7cfa834ed/src/polar.jl#L1-L41">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="SymplecticFactorizations.Symplectic-Union{Tuple{D}, Tuple{F}, Tuple{F, D}} where {F&lt;:SymplecticFactorizations.SymplecticForm, D&lt;:(AbstractMatrix)}" href="#SymplecticFactorizations.Symplectic-Union{Tuple{D}, Tuple{F}, Tuple{F, D}} where {F&lt;:SymplecticFactorizations.SymplecticForm, D&lt;:(AbstractMatrix)}"><code>SymplecticFactorizations.Symplectic</code></a> — <span class="docstring-category">Method</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><pre><code class="language-julia hljs">Symplectic(J::SymplecticForm, S::AbstractMatrix) &lt;: AbstractMatrix</code></pre><p>Construct a wrapper of a symplectic matrix <code>S</code> with its corresponding symplectic basis defined by the symplectic form <code>J</code>.</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/apkille/SymplecticFactorizations.jl/blob/e586a7d22192bb7ab06327fcfb9853a7cfa834ed/src/symplectic.jl#L10-L15">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="SymplecticFactorizations.Williamson" href="#SymplecticFactorizations.Williamson"><code>SymplecticFactorizations.Williamson</code></a> — <span class="docstring-category">Type</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><pre><code class="language-julia hljs">Williamson &lt;: Factorization</code></pre><p>Matrix factorization type of the williamson decomposition of a positive-definite matrix <code>V</code>. This is the return type of <a href="#SymplecticFactorizations.williamson-Union{Tuple{T}, Tuple{F}, Tuple{F, AbstractMatrix{T}}} where {F&lt;:SymplecticFactorizations.SymplecticForm, T&lt;:Real}"><code>williamson(_)</code></a>, the corresponding matrix factorization function.</p><p>If <code>F::Williamson</code> is the factorization object, <code>S</code> and <code>spectrum</code> can be obtained via <code>F.S</code> and <code>F.spectrum</code>.</p><p>Iterating the decomposition produces the components <code>S</code> and <code>spectrum</code>.</p><p><strong>Examples</strong></p><pre><code class="nohighlight hljs">julia&gt; V = [7. 2.; 2. 1.]
+2×2 Matrix{Float64}:
+ 7.0  2.0
+ 2.0  1.0
+
+julia&gt; isposdef(V)
+true
+
+julia&gt; F = williamson(BlockForm(1), V)
+Williamson{Float64, Matrix{Float64}, Vector{Float64}}
+S factor:
+2×2 Matrix{Float64}:
+ 0.448828  -1.95959
+ 0.61311   -0.448828
+symplectic spectrum:
+1-element Vector{Float64}:
+ 1.7320508075688772
+
+julia&gt; isapprox(F.S * V * F.S&#39;, Diagonal(repeat(F.spectrum, 2)))
+true
+
+julia&gt; S, spectrum = F; # destructuring via iteration
+
+julia&gt; S == F.S &amp;&amp; spectrum == F.spectrum
+true</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/apkille/SymplecticFactorizations.jl/blob/e586a7d22192bb7ab06327fcfb9853a7cfa834ed/src/williamson.jl#L1-L40">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="SymplecticFactorizations.issymplectic-Union{Tuple{R2}, Tuple{R1}, Tuple{T}, Tuple{SymplecticFactorizations.SymplecticForm, T}} where {T&lt;:(AbstractMatrix), R1&lt;:Real, R2&lt;:Real}" href="#SymplecticFactorizations.issymplectic-Union{Tuple{R2}, Tuple{R1}, Tuple{T}, Tuple{SymplecticFactorizations.SymplecticForm, T}} where {T&lt;:(AbstractMatrix), R1&lt;:Real, R2&lt;:Real}"><code>SymplecticFactorizations.issymplectic</code></a> — <span class="docstring-category">Method</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><pre><code class="language-julia hljs">issymplectic(form::Symplecticform, x::AbstractMatrix; atol=0.0, rtol=atol)
+issymplectic(x::Symplectic; atol=0.0, rtol=atol)</code></pre><p>Return whether or not an input matrix is symplectic. Keyword arguments <code>atol</code> and <code>rtol</code> can be called to determine absolute and relative tolerances of the check, respectively.</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/apkille/SymplecticFactorizations.jl/blob/e586a7d22192bb7ab06327fcfb9853a7cfa834ed/src/symplectic.jl#L56-L62">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="SymplecticFactorizations.polar-Union{Tuple{AbstractMatrix{T}}, Tuple{T}} where T" href="#SymplecticFactorizations.polar-Union{Tuple{AbstractMatrix{T}}, Tuple{T}} where T"><code>SymplecticFactorizations.polar</code></a> — <span class="docstring-category">Method</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><pre><code class="language-julia hljs">polar(S::AbstractMatrix) -&gt; Polar
+polar(S::Symplectic) -&gt; Polar</code></pre><p>Compute the polar decomposition of a symplectic matrix <code>S</code> and return a <code>Polar</code> object.</p><p><code>O</code> and <code>P</code> can be obtained from the factorization <code>F</code> via <code>F.O</code> and <code>F.P</code>, such that <code>S = O * P</code>. For the symplectic polar decomposition case, <code>O</code> is an orthogonal symplectic matrix and <code>P</code> is a positive-definite symmetric symplectic matrix.</p><p>Iterating the decomposition produces the components <code>O</code> and <code>P</code>.</p><p><strong>Examples</strong></p><pre><code class="language-julia-repl hljs">julia&gt; S = [1. 1.; 0. 1.]
+2×2 Matrix{Float64}:
+ 1.0  1.0
+ 0.0  1.0
+
+julia&gt; issymplectic(BlockForm(1), S)
+true
+
+julia&gt; F = polar(S)
+Polar{Float64, Matrix{Float64}, Matrix{Float64}}
+O factor:
+2×2 Matrix{Float64}:
+  0.894427  0.447214
+ -0.447214  0.894427
+P factor:
+2×2 Matrix{Float64}:
+ 0.894427  0.447214
+ 0.447214  1.34164
+
+julia&gt; isapprox(F.O * F.P, S)
+true
+
+julia&gt; O, P = F; # destructuring via iteration
+
+julia&gt; O == F.O &amp;&amp; P == F.P
+true</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/apkille/SymplecticFactorizations.jl/blob/e586a7d22192bb7ab06327fcfb9853a7cfa834ed/src/polar.jl#L57-L98">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="SymplecticFactorizations.randsymplectic-Union{Tuple{SymplecticFactorizations.SymplecticForm{N}}, Tuple{N}} where N&lt;:Int64" href="#SymplecticFactorizations.randsymplectic-Union{Tuple{SymplecticFactorizations.SymplecticForm{N}}, Tuple{N}} where N&lt;:Int64"><code>SymplecticFactorizations.randsymplectic</code></a> — <span class="docstring-category">Method</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><pre><code class="language-julia hljs">randsymplectic(form::SymplecticForm)
+randsymplectic(::Symplectic, form::SymplecticForm)</code></pre><p>Calculate a random symplectic matrix in symplectic representation defined by <code>basis</code>.</p></div><a class="docs-sourcelink" target="_blank" href="https://github.com/apkille/SymplecticFactorizations.jl/blob/e586a7d22192bb7ab06327fcfb9853a7cfa834ed/src/symplectic.jl#L72-L77">source</a></section></article><article class="docstring"><header><a class="docstring-article-toggle-button fa-solid fa-chevron-down" href="javascript:;" title="Collapse docstring"></a><a class="docstring-binding" id="SymplecticFactorizations.williamson-Union{Tuple{T}, Tuple{F}, Tuple{F, AbstractMatrix{T}}} where {F&lt;:SymplecticFactorizations.SymplecticForm, T&lt;:Real}" href="#SymplecticFactorizations.williamson-Union{Tuple{T}, Tuple{F}, Tuple{F, AbstractMatrix{T}}} where {F&lt;:SymplecticFactorizations.SymplecticForm, T&lt;:Real}"><code>SymplecticFactorizations.williamson</code></a> — <span class="docstring-category">Method</span><span class="is-flex-grow-1 docstring-article-toggle-button" title="Collapse docstring"></span></header><section><div><pre><code class="language-julia hljs">williamson(form::SymplecticForm, V::AbstractMatrix) -&gt; Williamson
+williamson(::Symplectic, form::SymplecticForm, V::AbstractMatrix) -&gt; Williamson</code></pre><p>Compute the williamson decomposition of a positive-definite matrix <code>V</code> and return a <code>Williamson</code> object.</p><p>A symplectic matrix <code>S</code> and symplectic spectrum <code>spectrum</code> can be obtained via <code>F.S</code> and <code>F.spectrum</code>.</p><p>Iterating the decomposition produces the components <code>S</code> and <code>spectrum</code>.</p><p><strong>Examples</strong></p><pre><code class="nohighlight hljs">julia&gt; V = [7. 2.; 2. 1.]
+2×2 Matrix{Float64}:
+ 7.0  2.0
+ 2.0  1.0
+
+julia&gt; isposdef(V)
+true
+
+julia&gt; F = williamson(BlockForm(1), V)
+Williamson{Float64, Matrix{Float64}, Vector{Float64}}
+S factor:
+2×2 Matrix{Float64}:
+ 0.448828  -1.95959
+ 0.61311   -0.448828
+symplectic spectrum:
+1-element Vector{Float64}:
+ 1.7320508075688772
+
+julia&gt; isapprox(F.S * V * F.S&#39;, Diagonal(repeat(F.spectrum, 2)))
+true
+
+julia&gt; S, spectrum = F; # destructuring via iteration
+
+julia&gt; S == F.S &amp;&amp; spectrum == F.spectrum
+true</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/apkille/SymplecticFactorizations.jl/blob/e586a7d22192bb7ab06327fcfb9853a7cfa834ed/src/williamson.jl#L56-L95">source</a></section></article></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.8.0 on <span class="colophon-date" title="Monday 13 January 2025 01:39">Monday 13 January 2025</span>. Using Julia version 1.11.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
