@@ -100,9 +100,26 @@
             @test @eval(LinearAlgebra.$f)(S_block) == @eval(LinearAlgebra.$f)(data_block)
             @test @eval(LinearAlgebra.$f)(S_pair) == @eval(LinearAlgebra.$f)(data_pair)
         end
-        for f in (:det, :tr, :inv, :pinv, :logdet)
+        for f in (:det, :tr, :pinv, :logdet)
             @test @eval(LinearAlgebra.$f)(S_block) == @eval(LinearAlgebra.$f)(data_block)
             @test @eval(LinearAlgebra.$f)(S_pair) == @eval(LinearAlgebra.$f)(data_pair)
         end
+        @test isapprox(inv(S_block).data, inv(S_block.data), atol = 1e-5) && isapprox(inv(S_pair).data, inv(S_pair.data), atol = 1e-5)
+        @test S_block * S_pair isa Matrix{Float64} && S_pair * S_block isa Matrix{Float64}
+        @test issymplectic(S_block * S_block, atol = 1e-5) && issymplectic(S_pair * S_pair, atol = 1e-5)
+        @test S_block / S_pair isa Matrix{Float64} && S_pair / S_block isa Matrix{Float64}
+        @test issymplectic(S_block / S_block, atol = 1e-5) && issymplectic(S_pair / S_pair, atol = 1e-5)
+        @test S_block \ S_pair isa Matrix{Float64} && S_pair \ S_block isa Matrix{Float64}
+        @test issymplectic(S_block \ S_block, atol = 1e-5) && issymplectic(S_pair \ S_pair, atol = 1e-5)
+        
+        S1_block = randsymplectic(Symplectic, J)
+        S1_pair = randsymplectic(Symplectic, Omega)
+        mul!(S1_block, S_block, S_block)
+        mul!(S1_pair, S_pair, S_pair)
+        @test S1_block == S_block * S_block
+        @test S1_pair == S_pair * S_pair
+        mul!(S1_block, S_block, S_pair)
+        mul!(S1_pair, S_pair, S_block)
+        @test S1_block == S_block.data * S_pair.data && S1_pair == S_pair.data * S_block.data
     end
 end
