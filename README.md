@@ -14,7 +14,7 @@ To install SymplecticFactorizations.jl, start Julia and run the following comman
 ] add SymplecticFactorizations
 ```
 
-### `Symplectic` matrix type
+## `Symplectic` matrix type
 
 The `Symplectic` matrix type is simply a wrapper around a matrix and its corresponding symplectic form.
 To give a taste, compute a random symplectic matrix `S` by specifying the symplectic form type:
@@ -62,7 +62,7 @@ false
 ```
 In the last line of code, the symplectic check failed because we defined `s` with respect to `BlockForm` rather than `PairForm`.
 
-### Symplectic decompositions
+## Symplectic decompositions
 
 To compute the symplectic polar decomposition of `S`, which produces a product of an orthogonal symplectic matrix `O` and positive-definite symmetric symplectic matrix `P`, call `polar`:
 
@@ -112,3 +112,39 @@ symplectic spectrum:
 julia> isapprox(F.S * V * F.S', Diagonal(repeat(F.spectrum, 2)), atol = 1e-10)
 true
 ```
+
+## Quick Benchmarks
+
+### 
+
+<details>
+  <summary>Matrix Inverse</summary>
+<p>
+
+```julia
+julia> S = randsymplectic(Symplectic, BlockForm(100));
+
+julia> @btime inv($S.data);
+  650.084 μs (9 allocations: 414.30 KiB)
+
+julia> @btime inv($S);
+  279.875 μs (12 allocations: 1.22 MiB)
+```
+
+</p>
+</details>
+
+
+<details>
+  <summary>Symplectic Decompositions</summary>
+<p>
+
+```julia
+julia> @btime polar(S) setup=(S=randsymplectic(Symplectic, BlockForm(100)));
+  6.826 ms (29 allocations: 3.08 MiB)
+
+julia> @btime williamson(J, V) setup=(X=rand(200,200); V=X'*X; J=BlockForm(100));
+  22.587 ms (129 allocations: 6.77 MiB)
+```
+<p>
+</details>

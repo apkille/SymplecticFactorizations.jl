@@ -45,12 +45,29 @@ Base.copyto!(dest::AbstractMatrix, src::Symplectic) = (copyto!(dest, src.data); 
 for f in (:lu, :lu!, :lq, :lq!, :qr, :qr!, :schur, :schur!, :hessenberg, :hessenberg!)
     @eval LinearAlgebra.$f(x::Symplectic; kwargs...) = LinearAlgebra.$f(x.data; kwargs...)
 end
-for f in ( :svd, :svd!, :svdvals, :svdvals!, :eigvals, :eigvals!, :eigvecs, :eigen, :eigen!)
+for f in (:svd, :svd!, :svdvals, :svdvals!, :eigvals, :eigvals!, :eigvecs, :eigen, :eigen!)
     @eval LinearAlgebra.$f(x::Symplectic; kwargs...) = LinearAlgebra.$f(x.data; kwargs...)
 end
-for f in (:det, :tr, :inv, :pinv, :logdet)
+for f in (:det, :tr, :pinv, :logdet)
     @eval LinearAlgebra.$f(x::Symplectic; kwargs...) = LinearAlgebra.$f(x.data; kwargs...)
 end
+function LinearAlgebra.inv(x::Symplectic)
+    J = symplecticform(x.form)
+    Sinv = -J * transpose(x.data) * J
+    return Symplectic(x.form, Sinv)
+end
+function LinearAlgebra.mul!(x::Symplectic, y::Symplectic, z::Symplectic)
+    if y.form == z.form
+        mul!(x.data, y.data, z.data)
+        return x
+    else
+        mul!(x.data, y.data, z.data)
+        return x.data
+    end
+end
+Base.:(*)(x::Symplectic, y::Symplectic) = x.form == y.form ? Symplectic(x.form, x.data * y.data) : x.data * y.data
+Base.:(/)(x::Symplectic, y::Symplectic) = x.form == y.form ? Symplectic(x.form, x.data / y.data) : x.data / y.data
+Base.:(\)(x::Symplectic, y::Symplectic) = x.form == y.form ? Symplectic(x.form, x.data \ y.data) : x.data \ y.data
 
 
 """
