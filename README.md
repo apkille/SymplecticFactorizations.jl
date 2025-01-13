@@ -148,3 +148,23 @@ julia> @btime williamson(J, V) setup=(X=rand(200,200); V=X'*X; J=BlockForm(100))
 ```
 <p>
 </details>
+
+<details>
+  <summary>Version Information</summary>
+<p>
+
+```julia
+julia> versioninfo()
+Julia Version 1.11.1
+Commit 8f5b7ca12ad (2024-10-16 10:53 UTC)
+Build Info:
+  Official https://julialang.org/ release
+Platform Info:
+  OS: macOS (arm64-apple-darwin22.4.0)
+  CPU: 8 × Apple M1 Pro
+  WORD_SIZE: 64
+  LLVM: libLLVM-16.0.6 (ORCJIT, apple-m1)
+Threads: 1 default, 0 interactive, 1 GC (on 6 virtual cores)
+```
+<p>
+</details>
