@@ -3,8 +3,8 @@
 [![Build status (Github Actions)](https://github.com/apkille/SymplecticFactorizations.jl/workflows/CI/badge.svg)](https://github.com/apkille/SymplecticFactorizations.jl/actions)
 [![codecov](https://codecov.io/github/apkille/SymplecticFactorizations.jl/graph/badge.svg?token=JWMOD4FY6P)](https://codecov.io/github/apkille/SymplecticFactorizations.jl)
 
-SymplecticFactorizations is a Julia package for computing special decompositions
-of symplectic matrices. 
+SymplecticFactorizations is a Julia package for performing optimized linear algebra computations and special decompositions of symplectic matrices. A symplectic matrix `S` is a `2n x 2n` matrix
+that satisfies the condition `SJSᵀ = J`, where `J` is a `2n x 2n` invertible, skew-symmetric matrix called the symplectic form.
 
 ## Usage
 
