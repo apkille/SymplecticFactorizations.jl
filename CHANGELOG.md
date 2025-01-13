@@ -1,5 +1,9 @@
 # News
 
+## v0.1.4 - dev
+
+- Dispatch base multiplication methods on `Symplectic` type.
+
 ## v0.1.3 - 2025-01-12
 
 - Add `::Type{Symplectic}` to method arguments to create Symplectic matrix types.
