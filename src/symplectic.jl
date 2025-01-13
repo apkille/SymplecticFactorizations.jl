@@ -57,7 +57,7 @@ function LinearAlgebra.inv(x::Symplectic)
     return Symplectic(x.form, Sinv)
 end
 function LinearAlgebra.mul!(x::Symplectic, y::Symplectic, z::Symplectic)
-    if y.form == z.form
+    if x.form == y.form == z.form
         mul!(x.data, y.data, z.data)
         return x
     else
@@ -68,7 +68,6 @@ end
 Base.:(*)(x::Symplectic, y::Symplectic) = x.form == y.form ? Symplectic(x.form, x.data * y.data) : x.data * y.data
 Base.:(/)(x::Symplectic, y::Symplectic) = x.form == y.form ? Symplectic(x.form, x.data / y.data) : x.data / y.data
 Base.:(\)(x::Symplectic, y::Symplectic) = x.form == y.form ? Symplectic(x.form, x.data \ y.data) : x.data \ y.data
-
 
 """
     issymplectic(form::Symplecticform, x::AbstractMatrix; atol=0.0, rtol=atol)
