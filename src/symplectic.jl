@@ -42,6 +42,17 @@ Base.copyto!(dest::Symplectic, src::Symplectic) = (copyto!(dest.data, src.data);
 Base.copyto!(dest::Symplectic, src::AbstractMatrix) = (copyto!(dest.data, src); return dest)
 Base.copyto!(dest::AbstractMatrix, src::Symplectic) = (copyto!(dest, src.data); return dest)
 
+for f in (:lu, :lu!, :lq, :lq!, :qr, :qr!, :schur, :schur!, :hessenberg, :hessenberg!)
+    @eval LinearAlgebra.$f(x::Symplectic; kwargs...) = LinearAlgebra.$f(x.data; kwargs...)
+end
+for f in ( :svd, :svd!, :svdvals, :svdvals!, :eigvals, :eigvals!, :eigvecs, :eigen, :eigen!)
+    @eval LinearAlgebra.$f(x::Symplectic; kwargs...) = LinearAlgebra.$f(x.data; kwargs...)
+end
+for f in (:det, :tr, :inv, :pinv, :logdet)
+    @eval LinearAlgebra.$f(x::Symplectic; kwargs...) = LinearAlgebra.$f(x.data; kwargs...)
+end
+
+
 """
     issymplectic(form::Symplecticform, x::AbstractMatrix; atol=0.0, rtol=atol)
     issymplectic(x::Symplectic; atol=0.0, rtol=atol)

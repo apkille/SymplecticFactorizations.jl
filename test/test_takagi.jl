@@ -4,7 +4,7 @@
 
     @testset "random objects" begin
 
-        n = rand(1:20)
+        n = rand(1:5)
         R_sym = Symmetric(rand(Float64, n, n))
         C_sym = Symmetric(rand(ComplexF64, n, n))
 

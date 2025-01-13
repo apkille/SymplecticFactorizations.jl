@@ -1,8 +1,9 @@
 # News
 
-## v0.1.3 - dev
+## v0.1.3 - 2025-01-12
 
 - Add `::Type{Symplectic}` to method arguments to create Symplectic matrix types.
+- Add support from LinearAlgebra.jl.
 
 ## v0.1.2 - 2025-01-10
 
