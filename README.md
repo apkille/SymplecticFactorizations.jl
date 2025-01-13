@@ -14,7 +14,10 @@ To install SymplecticFactorizations.jl, start Julia and run the following comman
 ] add SymplecticFactorizations
 ```
 
-Compute a random symplectic matrix `S` by specifying the symplectic form type:
+### `Symplectic` matrix type
+
+The `Symplectic` matrix type is simply a wrapper around a matrix and its corresponding symplectic form.
+To give a taste, compute a random symplectic matrix `S` by specifying the symplectic form type:
 
 ```julia
 julia> using SymplecticFactorizations
@@ -29,36 +32,55 @@ julia> symplecticform(J)
  -1.0   0.0  0.0  0.0
   0.0  -1.0  0.0  0.0
 
-julia> S = randsymplectic(J)
-4×4 Matrix{Float64}:
- -26.6597   10.4934    22.6423   -9.53373
- -23.6514    8.08135   19.9027   -7.81124
-  -1.76113   0.256758   1.67699   0.322509
- -23.9402    8.67196   19.8991   -8.98003
+julia> S = randsymplectic(Symplectic, J)
+4×4 Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}:
+ -0.116535    -0.181523  1.15808    0.00240053
+  0.137176    -0.498848  0.55193   -1.22289
+ -0.853172    -0.578052  0.452435  -0.348686
+  0.00544036   0.618131  0.493416  -0.35965
 
-julia> issymplectic(J, S, atol=1e-10)
+julia> issymplectic(S, atol=1e-10)
 true
 ```
 Similar methods exist for `PairForm(n)`, which corresponds to the symplectic form equal to the direct
-sum of `[0 1; -1 0]`.
+sum of `[0 1; -1 0]`. The matrix type `Symplectic` is nice for keeping track of the symplectic basis
+and performing optimized computations, however, standard Julia matrix types are supported in this package:
+
+```julia
+julia> s = randsymplectic(J)
+4×4 Matrix{Float64}:
+ -7.69543  -41.5856  13.5169    92.976
+ -2.04414   -8.3759   5.14638   18.4387
+  5.89402   33.3788  -9.05499  -74.8917
+ -6.10599  -30.7716   9.99773   68.9329
+
+julia> issymplectic(J, s, atol=1e-10)
+true
+
+julia> issymplectic(PairForm(2), s, atol=1e-10)
+false
+```
+In the last line of code, the symplectic check failed because we defined `s` with respect to `BlockForm` rather than `PairForm`.
+
+### Symplectic decompositions
 
 To compute the symplectic polar decomposition of `S`, which produces a product of an orthogonal symplectic matrix `O` and positive-definite symmetric symplectic matrix `P`, call `polar`:
 
 ```julia
 julia> F = polar(S)
-Polar{Float64, Matrix{Float64}, Matrix{Float64}}
+Polar{Float64, Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}, Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}}
 O factor:
-4×4 Matrix{Float64}:
- -0.151275   0.863869    0.480258  -0.0140919
- -0.259969  -0.503456    0.823944   0.00798633
- -0.480217   0.0140998  -0.151275   0.863892
- -0.823968  -0.0079728  -0.259969  -0.503417
+4×4 Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}:
+  0.123739  -0.181484  0.923535   0.314381
+  0.316785  -0.36622   0.177255  -0.856803
+ -0.923535  -0.314381  0.123739  -0.181484
+ -0.177255   0.856803  0.316785  -0.36622
 P factor:
-4×4 Matrix{Float64}:
-  30.7533  -10.957    -25.8008   10.7173
- -10.957     4.9308     9.40484  -4.22713
- -25.8008    9.40484   21.846    -8.72893
-  10.7173   -4.22713   -8.72893   4.87128
+4×4 Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}:
+  0.816005     0.243795  -0.187156  -0.00132403
+  0.243795     0.926977  -0.131778   0.248883
+ -0.187156    -0.131778   1.37965   -0.371624
+ -0.00132403   0.248883  -0.371624   1.24352
 
 julia> isapprox(F.O * F.P, S, atol = 1e-10)
 true
@@ -74,18 +96,18 @@ julia> X = rand(4, 4); V = X' * X
  0.819762  0.452062  1.1312    1.02089
  0.644317  0.525889  1.02089   1.09805
 
-julia> F = williamson(J, V)
-Williamson{Float64, Matrix{Float64}, Vector{Float64}}
+julia> F = williamson(Symplectic, J, V)
+Williamson{Float64, Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}, Vector{Float64}}
 S factor:
-4×4 Matrix{Float64}:
- -0.675114   0.666843   0.586008  -0.437426
-  0.733678   0.731394  -0.305086  -0.143899
-  0.686757  -0.647903  -1.3332     1.17837
- -0.24263   -0.213865   0.785635   0.722449
+4×4 Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}:
+ -0.67512    0.66685    0.586     -0.437417
+  0.733677   0.731394  -0.305086  -0.143899
+  0.686747  -0.647894  -1.33318    1.17835
+ -0.24263   -0.213864   0.785636   0.722449
 symplectic spectrum:
 2-element Vector{Float64}:
- 0.05191138727617343
- 1.8136996243167325
+ 0.05191288411625232
+ 1.8137043652121851
 
 julia> isapprox(F.S * V * F.S', Diagonal(repeat(F.spectrum, 2)), atol = 1e-10)
 true
