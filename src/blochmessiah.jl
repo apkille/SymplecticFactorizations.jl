@@ -1,3 +1,50 @@
+"""
+    BlochMessiah <: Factorization
+
+Matrix factorization type of the Bloch-Messiah/Euler decomposition of a symplectic matrix `S`.
+This is the return type of [`blochmessiah(_)`](@ref), the corresponding matrix factorization function.
+
+If `F::BlochMessiah` is the factorization object, `O`, `values` and Q` can be obtained
+via `F.O`, `F.values`, and `F.Q`.
+
+Iterating the decomposition produces the components `O`, `values`, and `Q`, in that order.
+
+# Examples
+```
+julia> S = Symplectic(BlockForm(1), [1. 1.; 0. 1.])
+2×2 Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}:
+ 1.0  1.0
+ 0.0  1.0
+
+julia> issymplectic(S)
+true
+
+julia> F = blochmessiah(S)
+BlochMessiah{Float64, Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}, Vector{Float64}}
+O factor:
+2×2 Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}:
+ 0.850651  -0.525731
+ 0.525731   0.850651
+values:
+1-element Vector{Float64}:
+ 1.618033988749895
+Q factor:
+2×2 Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}:
+  0.525731  0.850651
+ -0.850651  0.525731
+
+julia> isapprox(S, F.O * Diagonal(vcat(F.values, F.values .^ (-1))) * F.Q, atol = 1e-10)
+true
+
+julia> issymplectic(F.O, atol = 1e-10) && issymplectic(F.Q, atol = 1e-10)
+true
+
+julia> O, values, Q = F; # destructuring via iteration
+
+julia> O == F.O && values == F.values && Q == F.Q
+true
+```
+"""
 struct BlochMessiah{T,M<:AbstractArray{T},N<:AbstractVector{T}} <: Factorization{T}
     O::M
     values::N
@@ -16,42 +63,49 @@ Base.iterate(F::BlochMessiah, ::Val{:Q}) = (F.Q, Val(:done))
 Base.iterate(F::BlochMessiah, ::Val{:done}) = nothing
 
 """
-    euler(form::SymplecticForm, x::AbstractMatrix) -> Euler
-    williamson(::Symplectic, form::SymplecticForm, V::AbstractMatrix) -> Williamson
+    blochmessiah(form::SymplecticForm, S::AbstractMatrix) -> BlochMessiah
+    blochmessiah(S::Symplectic) -> BlochMessiah
 
-Compute the williamson decomposition of a positive-definite matrix `V` and return a `Williamson` object.
+Compute the Bloch-Messiah/Euler decomposition of a symplectic matrix `S` and return a `BlockMessiah` object.
 
-A symplectic matrix `S` and symplectic spectrum `spectrum` can be obtained
-via `F.S` and `F.spectrum`.
+The orthogonal symplectic matrices `O` and `Q` as well as the singular values `values` can be obtained
+via `F.O`, `F.Q`, and `F.values`, respectively.
 
-Iterating the decomposition produces the components `S` and `spectrum`.
+Iterating the decomposition produces the components `O`, `values`, and `Q`, in that order.
 
 # Examples
 ```
-julia> V = [7. 2.; 2. 1.]
-2×2 Matrix{Float64}:
- 7.0  2.0
- 2.0  1.0
+julia> S = Symplectic(BlockForm(1), [1. 1.; 0. 1.])
+2×2 Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}:
+ 1.0  1.0
+ 0.0  1.0
 
-julia> isposdef(V)
+julia> issymplectic(S)
 true
 
-julia> F = williamson(BlockForm(1), V)
-Williamson{Float64, Matrix{Float64}, Vector{Float64}}
-S factor:
-2×2 Matrix{Float64}:
- 0.448828  -1.95959
- 0.61311   -0.448828
-symplectic spectrum:
+julia> F = blochmessiah(S)
+BlochMessiah{Float64, Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}, Vector{Float64}}
+O factor:
+2×2 Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}:
+ 0.850651  -0.525731
+ 0.525731   0.850651
+values:
 1-element Vector{Float64}:
- 1.7320508075688772
+ 1.618033988749895
+Q factor:
+2×2 Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}:
+  0.525731  0.850651
+ -0.850651  0.525731
 
-julia> isapprox(F.S * V * F.S', Diagonal(repeat(F.spectrum, 2)))
+julia> isapprox(S, F.O * Diagonal(vcat(F.values, F.values .^ (-1))) * F.Q, atol = 1e-10)
 true
 
-julia> S, spectrum = F; # destructuring via iteration
+julia> issymplectic(F.O, atol = 1e-10) && issymplectic(F.Q, atol = 1e-10)
+true
 
-julia> S == F.S && spectrum == F.spectrum
+julia> O, values, Q = F; # destructuring via iteration
+
+julia> O == F.O && values == F.values && Q == F.Q
 true
 ```
 """
