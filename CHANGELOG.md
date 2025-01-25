@@ -1,8 +1,9 @@
 # News
 
-## v0.1.4 - dev
+## v0.1.4 - 2025-01-25
 
 - Dispatch base multiplication methods on `Symplectic` type.
+- Implement `blochmessiah` decomposition methods and type.
 
 ## v0.1.3 - 2025-01-12
 

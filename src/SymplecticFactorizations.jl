@@ -1,7 +1,7 @@
 module SymplecticFactorizations
 
 import LinearAlgebra
-using LinearAlgebra: mul!, Diagonal, qr, Factorization, svd, require_one_based_indexing, Symmetric, eigen, I, eigvals, adjoint, eigvecs, normalize!
+using LinearAlgebra: mul!, Diagonal, qr, Factorization, svd, require_one_based_indexing, Symmetric, eigen, eigen!, I, eigvals, adjoint, eigvecs, normalize!
 
 export 
     # symplectic stuff
@@ -11,7 +11,9 @@ export
     # takagi/autonne decomposition
     takagi, Takagi,
     # williamson decomposition
-    williamson, Williamson
+    williamson, Williamson,
+    # bloch-messiah/euler decomposition
+    blochmessiah, BlochMessiah
 
 include("form.jl")
 
@@ -22,5 +24,7 @@ include("polar.jl")
 include("takagi.jl")
 
 include("williamson.jl")
+
+include("blochmessiah.jl")
 
 end
