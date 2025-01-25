@@ -182,6 +182,9 @@ julia> @btime polar(S) setup=(S=randsymplectic(Symplectic, BlockForm(100)));
 
 julia> @btime williamson(J, V) setup=(X=rand(200,200); V=X'*X; J=BlockForm(100));
   22.587 ms (129 allocations: 6.77 MiB)
+
+julia> @btime blochmessiah(S) setup=(S=randsymplectic(Symplectic, BlockForm(100)));
+  11.867 ms (64 allocations: 4.68 MiB)
 ```
 <p>
 </details>
