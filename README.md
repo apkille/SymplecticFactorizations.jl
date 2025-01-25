@@ -64,7 +64,7 @@ In the last line of code, the symplectic check failed because we defined `s` wit
 
 ## Symplectic decompositions
 
-To compute the symplectic polar decomposition of `S`, which produces a product of an orthogonal symplectic matrix `O` and positive-definite symmetric symplectic matrix `P`, call `polar`:
+To compute the symplectic polar decomposition of `S`, which produces a product of an orthosymplectic matrix `O` and positive-definite symmetric symplectic matrix `P`, call `polar`:
 
 ```julia
 julia> F = polar(S)
@@ -111,6 +111,43 @@ symplectic spectrum:
 
 julia> isapprox(F.S * V * F.S', Diagonal(repeat(F.spectrum, 2)), atol = 1e-10)
 true
+```
+
+To compute the Bloch-Messiah/Euler decomposition of a symplectic matrix `S`, which finds the product of an orthosymplectic matrix followed by a diagonal matrix followed by another orthosymplectic matrix, call `blochmessiah`:
+
+```julia
+julia> F = blochmessiah(S)
+BlochMessiah{Float64, Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}, Vector{Float64}}
+O factor:
+4×4 Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}:
+ -0.636034   -0.492216   0.331745    0.493082
+  0.696422   -0.690058   0.0200433   0.195995
+ -0.331745   -0.493081  -0.636034   -0.492216
+ -0.0200437  -0.195995   0.696422   -0.690058
+values:
+2-element Vector{Float64}:
+ 1.0016241730101116
+ 1.8152715263879216
+Q factor:
+4×4 Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}:
+ 0.451846  -0.0524922  -0.511355  -0.729107
+ 0.210612   0.329129   -0.699996   0.597764
+ 0.511355   0.729107    0.451845  -0.0524917
+ 0.699996  -0.597764    0.210612   0.32913
+
+julia> D = Diagonal(vcat(F.values, F.values .^ (-1))) # sort singular values in direct sum form
+4×4 Diagonal{Float64, Vector{Float64}}:
+ 1.00162   ⋅        ⋅         ⋅ 
+  ⋅       1.81527   ⋅         ⋅ 
+  ⋅        ⋅       0.998378   ⋅ 
+  ⋅        ⋅        ⋅        0.550882
+
+julia> F.O * D * F.Q # == S
+4×4 Symplectic{BlockForm{Int64}, Float64, Matrix{Float64}}:
+ -0.116535    -0.181523  1.15808    0.0024005
+  0.137176    -0.498848  0.55193   -1.22289
+ -0.853173    -0.578053  0.452434  -0.348686
+  0.00544102   0.618132  0.493417  -0.35965
 ```
 
 ## Quick Benchmarks
