@@ -121,27 +121,29 @@ end
 function _blochmessiah(form::BlockForm, x::AbstractMatrix{T}) where {T<:Real}
     O, P = polar(x)
     n = form.n
-    vals, vecs = eigen(Symmetric(P))
-    Q′ = P
-    @inbounds for k in Base.OneTo(n)
-        Q′[k, :] .= @view(vecs[:, n+k])
-        Q′[n+k, :] .= @view(vecs[:, n-k+1])
-    end  
-    O′ = O * transpose(Q′)
-    values′ = vals[n+1:2n]
+    vals, vecs = eigen(Symmetric(P), sortby = x -> isless(1.0, x) ? -1/x : 1/x)
+    @inbounds for i in Base.OneTo(2*n)
+        vecs[1, i] < 0.0 && (vecs[:, i] .*= -1.0)
+    end
+    O′ = O * vecs
+    Q′ = vecs'
+    values′ = vals[1:n]
     return BlochMessiah{T}(O′, values′, Q′)
 end
 function _blochmessiah(form::PairForm, x::AbstractMatrix{T}) where {T<:Real}
     O, P = polar(x)
     n = form.n
-    vals, vecs = eigen(P)
+    vals, vecs = eigen(Symmetric(P), sortby = x -> isless(1.0, x) ? -1/x : 1/x)
     Q′ = P
-    @inbounds for k in Base.OneTo(n)
-        Q′[2k-1, :] .= @view(vecs[:, n+k])
-        Q′[2k, :] .= @view(vecs[:, n-k+1])
+    @inbounds for i in Base.OneTo(2*n)
+        vecs[1, i] < 0.0 && (vecs[:, i] .*= -1.0)
     end
-    O′ = O * transpose(Q′)
-    values′ = vals[n+1:2n]
+    @inbounds for i in Base.OneTo(n)
+        Q′[2i-1, :] .= @view(vecs[:, i])
+        Q′[2i, :] .= @view(vecs[:, i+n])
+    end
+    O′ = O * Q′'
+    values′ = vals[1:n]
     return BlochMessiah{T}(O′, values′, Q′)
 end
 
