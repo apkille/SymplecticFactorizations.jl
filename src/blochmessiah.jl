@@ -122,8 +122,9 @@ function _blochmessiah(form::BlockForm, x::AbstractMatrix{T}) where {T<:Real}
     O, P = polar(x)
     n = form.n
     vals, vecs = eigen(Symmetric(P), sortby = x -> isless(1.0, x) ? -1/x : 1/x)
-    @inbounds for i in Base.OneTo(2*n)
-        vecs[1, i] < 0.0 && (vecs[:, i] .*= -1.0)
+    @inbounds for i in Base.OneTo(n)
+        vecs[1, i] < 0.0 && (@view(vecs[:, i]) .*= -1.0)
+        vecs[1, i+n] < 0.0 && (@view(vecs[:, i+n]) .*= -1.0)
     end
     O′ = O * vecs
     Q′ = vecs'
@@ -135,10 +136,9 @@ function _blochmessiah(form::PairForm, x::AbstractMatrix{T}) where {T<:Real}
     n = form.n
     vals, vecs = eigen(Symmetric(P), sortby = x -> isless(1.0, x) ? -1/x : 1/x)
     Q′ = P
-    @inbounds for i in Base.OneTo(2*n)
-        vecs[1, i] < 0.0 && (vecs[:, i] .*= -1.0)
-    end
     @inbounds for i in Base.OneTo(n)
+        vecs[1, i] < 0.0 && (@view(vecs[:, i]) .*= -1.0)
+        vecs[1, i+n] < 0.0 && (@view(vecs[:, i+n]) .*= -1.0)
         Q′[2i-1, :] .= @view(vecs[:, i])
         Q′[2i, :] .= @view(vecs[:, i+n])
     end

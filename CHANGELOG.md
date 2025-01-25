@@ -1,5 +1,9 @@
 # News
 
+## v0.1.5 - dev
+
+- Decrease allocations created in `blochmessiah`.
+
 ## v0.1.4 - 2025-01-25
 
 - Dispatch base multiplication methods on `Symplectic` type.
