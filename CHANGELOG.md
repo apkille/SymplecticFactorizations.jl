@@ -1,6 +1,6 @@
 # News
 
-## v0.1.5 - dev
+## v0.1.5 - 2025-01-30
 
 - Decrease allocations created in `blochmessiah`.
 
