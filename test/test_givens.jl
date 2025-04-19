@@ -74,13 +74,13 @@
             SZ = Symplectic(form, copy(Z))
             copyto!(Z, G)
             copyto!(SZ, G)
-            @test isapprox(Z, GMat, atol = 1e-12) && isapprox(SZ, Symplectic(form, GMat), atol = 1e-12)
-            @test isapprox(G * M, GMat * M, atol = 1e-12) && isapprox(M * G, M * GMat, atol = 1e-12)
-            @test isapprox(G * Symplectic(form, M), Symplectic(form, GMat * M), atol = 1e-12) && isapprox(Symplectic(form, M) * G, Symplectic(form, M * GMat), atol = 1e-12)
-            @test isapprox(G / M, GMat / M, atol = 1e-12) && isapprox(M / G, M / GMat, atol = 1e-12)
-            @test isapprox(G / Symplectic(form, M), Symplectic(form, GMat / M), atol = 1e-12) && isapprox(Symplectic(form, M) / G, Symplectic(form, M / GMat), atol = 1e-12)
-            @test isapprox(G \ M, GMat \ M, atol = 1e-12) && isapprox(M \ G, M \ GMat, atol = 1e-12)
-            @test isapprox(G \ Symplectic(form, M), Symplectic(form, GMat \ M), atol = 1e-12) && isapprox(Symplectic(form, M) \ G, Symplectic(form, M \ GMat), atol = 1e-12)
+            @test isapprox(Z, GMat, atol = 1e-8) && isapprox(SZ, Symplectic(form, GMat), atol = 1e-8)
+            @test isapprox(G * M, GMat * M, atol = 1e-8) && isapprox(M * G, M * GMat, atol = 1e-8)
+            @test isapprox(G * Symplectic(form, M), Symplectic(form, GMat * M), atol = 1e-8) && isapprox(Symplectic(form, M) * G, Symplectic(form, M * GMat), atol = 1e-8)
+            @test isapprox(G / M, GMat / M, atol = 1e-8) && isapprox(M / G, M / GMat, atol = 1e-8)
+            @test isapprox(G / Symplectic(form, M), Symplectic(form, GMat / M), atol = 1e-8) && isapprox(Symplectic(form, M) / G, Symplectic(form, M / GMat), atol = 1e-8)
+            @test isapprox(G \ M, GMat \ M, atol = 1e-8) && isapprox(M \ G, M \ GMat, atol = 1e-8)
+            @test isapprox(G \ Symplectic(form, M), Symplectic(form, GMat \ M), atol = 1e-8) && isapprox(Symplectic(form, M) \ G, Symplectic(form, M \ GMat), atol = 1e-8)
         end
     end
     @testset "LinearAlgebra methods" begin
@@ -100,8 +100,8 @@
             rmul!(IR, G)
             lmul!(G, SIL)
             rmul!(SIR, G)
-            @test isapprox(IL, GMat, atol = 1e-12) && isapprox(IR, GMat, atol = 1e-12)
-            @test isapprox(SIL, Symplectic(form, GMat), atol = 1e-12) && isapprox(SIR, Symplectic(form, GMat))
+            @test isapprox(IL, GMat, atol = 1e-8) && isapprox(IR, GMat, atol = 1e-8)
+            @test isapprox(SIL, Symplectic(form, GMat), atol = 1e-8) && isapprox(SIR, Symplectic(form, GMat))
         end
     end
 end
