@@ -41,7 +41,7 @@ end
 Base.Array(x::SymplecticGivens) = Matrix(x)
 function Base.AbstractMatrix{T1}(x::SymplecticGivens{F,N,T2}) where {F<:BlockForm,N<:Int,T1,T2}
     n, k, c, s = (x.form).n, x.k, x.c, x.s
-    M = zeros(T, 2n, 2n)
+    M = zeros(T1, 2n, 2n)
     @inbounds for i in Base.OneTo(n)
         if i == k
             M[i,i] = c
@@ -64,7 +64,7 @@ function Base.AbstractMatrix{T1}(x::SymplecticGivens{F,N,T2}) where {F<:PairForm
     M[2k,2k] = c
     return M
 end
-Base.checkbounds(x::SymplecticGivens, i::Int, j::Int) = (form = x.form; i <= 2 * form.n && j <: 2 * form.n)
+Base.checkbounds(x::SymplecticGivens, i::Int, j::Int) = (form = x.form; i <= 2 * form.n && j <= 2 * form.n)
 Base.checkbounds(x::SymplecticGivens, i::Int) = (form = x.form; i <= (2 * form.n)^2)
 Base.isequal(x::SymplecticGivens, y::SymplecticGivens) = x.form == y.form && x.k == y.k && x.c == y.c && x.s == y.s
 Base.isapprox(x::SymplecticGivens, y::SymplecticGivens) = x.form == y.form && isapprox(x.k, y.k) && isapprox(x.c, y.c) && isapprox(x.s, y.s)
@@ -143,10 +143,9 @@ Base.@propagate_inbounds function Base.getindex(x::SymplecticGivens{F,N,T}, i::I
     end
 end
 
-LinearAlgebra.adjoint(x::SymplecticGivens) = Givens(x.form, x.k, x.c, -x.s)
-LinearAlgebra.inv(x::Symplectic) = adjoint(x)
+LinearAlgebra.adjoint(x::SymplecticGivens) = SymplecticGivens(x.form, x.k, x.c, -x.s)
+LinearAlgebra.inv(x::SymplecticGivens) = adjoint(x)
 Base.copy(x::SymplecticGivens) = SymplecticGivens(x.form, copy(x.k), copy(x.c), copy(x.s))
-Base.copyto!(dest::SymplecticGivens, src::SymplecticGivens) = (copyto!(dest.data, src.data); return dest)
 @inline function Base.copyto!(dest::AbstractMatrix, src::SymplecticGivens{F,N,T}) where {F<:BlockForm,N<:Int,T}
     LinearAlgebra.require_one_based_indexing(dest)
     size(dest, 1) == size(dest, 2) || throw(ArgumentError("cannot copy a SymplecticGivens object to a non-square matrix."))
@@ -222,8 +221,6 @@ end
     end
     return y
 end
-LinearAlgebra.lmul!(x::SymplecticGivens, y::Symplectic) = lmul!(x, y.data)
-LinearAlgebra.rmul!(x::Symplectic, y::SymplecticGivens) = rmul!(x.data, y)
 @inline function LinearAlgebra.rmul!(x::AbstractVecOrMat, y::SymplecticGivens{F,N,T}) where {F<:PairForm,N<:Int,T}
     LinearAlgebra.require_one_based_indexing(x)
     size(x, 1) == size(x, 2) || throw(ArgumentError("cannot compute the matrix product between a non-square matrix and SymplecticGivens object."))
@@ -240,7 +237,11 @@ LinearAlgebra.rmul!(x::Symplectic, y::SymplecticGivens) = rmul!(x.data, y)
 end
 Base.:(*)(x::SymplecticGivens, y::Symplectic) = x.form == y.form ? Symplectic(x.form, x * y.data) : x * y.data
 Base.:(*)(x::Symplectic, y::SymplecticGivens) = x.form == y.form ? Symplectic(x.form, x.data * y) : x.data * y
-Base.:(/)(x::SymplecticGivens, y::Symplectic) = x.form == y.form ? Symplectic(x.form, x.data / y.data) : x.data / y.data
-Base.:(/)(x::Symplectic, y::SymplecticGivens) = x.form == y.form ? Symplectic(x.form, x.data / y.data) : x.data / y.data
-Base.:(\)(x::SymplecticGivens, y::Symplectic) = x.form == y.form ? Symplectic(x.form, x.data \ y.data) : x.data \ y.data
-Base.:(\)(x::Symplectic, y::SymplecticGivens) = x.form == y.form ? Symplectic(x.form, x.data \ y.data) : x.data \ y.data
+Base.:(/)(x::SymplecticGivens, y::Symplectic) = x.form == y.form ? Symplectic(x.form, x * inv(y.data)) : x * inv(y.data)
+Base.:(/)(x::Symplectic, y::SymplecticGivens) = x.form == y.form ? Symplectic(x.form, x.data * inv(y)) : x.data * inv(y)
+Base.:(/)(x::SymplecticGivens, y::AbstractMatrix) = x * inv(y)
+Base.:(/)(x::AbstractMatrix, y::SymplecticGivens) = x * inv(y)
+Base.:(\)(x::SymplecticGivens, y::Symplectic) = x.form == y.form ? Symplectic(x.form, inv(x) * y.data) : inv(x) * y.data
+Base.:(\)(x::Symplectic, y::SymplecticGivens) = x.form == y.form ? Symplectic(x.form, inv(x.data) * y) : inv(x.data) * y
+Base.:(\)(x::SymplecticGivens, y::AbstractMatrix) = inv(x) * y
+Base.:(\)(x::AbstractMatrix, y::SymplecticGivens) = inv(x) * y
