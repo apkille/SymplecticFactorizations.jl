@@ -235,12 +235,15 @@ end
     end
     return x
 end
+Base.:(*)(x::SymplecticGivens, y::SymplecticGivens) = x.k == y.k ? SymplecticGivens(x.form, x.k, x.c * y.c - x.s * y.s, x.c * y.s + x.s * y.c) : Symplectic(x.form, Matrix(x) * Matrix(y))
 Base.:(*)(x::SymplecticGivens, y::Symplectic) = x.form == y.form ? Symplectic(x.form, x * y.data) : x * y.data
 Base.:(*)(x::Symplectic, y::SymplecticGivens) = x.form == y.form ? Symplectic(x.form, x.data * y) : x.data * y
+Base.:(/)(x::SymplecticGivens, y::SymplecticGivens) = x.k == y.k ? SymplecticGivens(x.form, x.k, (x.c * y.c + x.s * y.s)/(y.c^2 + y.s^2), (-x.c * y.s + y.c * x.s)/(y.c^2 + y.s^2)) : Symplectic(x.form, Matrix(x) / Matrix(y))
 Base.:(/)(x::SymplecticGivens, y::Symplectic) = x.form == y.form ? Symplectic(x.form, x * inv(y.data)) : x * inv(y.data)
 Base.:(/)(x::Symplectic, y::SymplecticGivens) = x.form == y.form ? Symplectic(x.form, x.data * inv(y)) : x.data * inv(y)
 Base.:(/)(x::SymplecticGivens, y::AbstractMatrix) = x * inv(y)
 Base.:(/)(x::AbstractMatrix, y::SymplecticGivens) = x * inv(y)
+Base.:(\)(x::SymplecticGivens, y::SymplecticGivens) = x.k == y.k ? SymplecticGivens(x.form, x.k, (x.c * y.c + x.s * y.s)/(x.c^2 + x.s^2), (x.c * y.s - y.c * x.s)/(y.c^2 + y.s^2)) : Symplectic(x.form, Matrix(x) \ Matrix(y))
 Base.:(\)(x::SymplecticGivens, y::Symplectic) = x.form == y.form ? Symplectic(x.form, inv(x) * y.data) : inv(x) * y.data
 Base.:(\)(x::Symplectic, y::SymplecticGivens) = x.form == y.form ? Symplectic(x.form, inv(x.data) * y) : inv(x.data) * y
 Base.:(\)(x::SymplecticGivens, y::AbstractMatrix) = inv(x) * y

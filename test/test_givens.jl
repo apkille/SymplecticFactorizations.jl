@@ -56,6 +56,7 @@
 
         @inbounds for form in [J, Omega]
             G = givens(form, k, θ)
+            Gnew = givens(form, k-1, θ+0.3)
             @test isequal(G, copy(G)) && isapprox(G, copy(G))
             @test SymplecticGivens(G) == G
             @test copy(G) == G
@@ -65,6 +66,7 @@
             @test eltype(G) == Float64
 
             GMat = Matrix(G)
+            GMatnew = Matrix(Gnew)
             i, j = rand(1:2n), rand(1:2n)
             ind = rand(1:4n^2)
             @test G[i,j] == GMat[i,j] && G[j,i] == GMat[j,i]
@@ -76,10 +78,13 @@
             copyto!(SZ, G)
             @test isapprox(Z, GMat, atol = 1e-8) && isapprox(SZ, Symplectic(form, GMat), atol = 1e-8)
             @test isapprox(G * M, GMat * M, atol = 1e-8) && isapprox(M * G, M * GMat, atol = 1e-8)
+            @test isapprox(Matrix(G * G), GMat * GMat, atol = 1e-8) && isapprox(Symplectic(form, Matrix(Gnew * G)), Symplectic(form, GMatnew * GMat), atol = 1e-8)
             @test isapprox(G * Symplectic(form, M), Symplectic(form, GMat * M), atol = 1e-8) && isapprox(Symplectic(form, M) * G, Symplectic(form, M * GMat), atol = 1e-8)
             @test isapprox(G / M, GMat / M, atol = 1e-8) && isapprox(M / G, M / GMat, atol = 1e-8)
+            @test isapprox(Matrix(G / G), GMat / GMat, atol = 1e-8) && isapprox(Symplectic(form, Matrix(Gnew / G)), Symplectic(form, GMatnew / GMat), atol = 1e-8)
             @test isapprox(G / Symplectic(form, M), Symplectic(form, GMat / M), atol = 1e-8) && isapprox(Symplectic(form, M) / G, Symplectic(form, M / GMat), atol = 1e-8)
             @test isapprox(G \ M, GMat \ M, atol = 1e-8) && isapprox(M \ G, M \ GMat, atol = 1e-8)
+            @test isapprox(Matrix(G \ G), GMat \ GMat, atol = 1e-8) && isapprox(Symplectic(form, Matrix(Gnew \ G)), Symplectic(form, GMatnew \ GMat), atol = 1e-8)
             @test isapprox(G \ Symplectic(form, M), Symplectic(form, GMat \ M), atol = 1e-8) && isapprox(Symplectic(form, M) \ G, Symplectic(form, M \ GMat), atol = 1e-8)
         end
     end
