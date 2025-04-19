@@ -1,11 +1,14 @@
 module SymplecticFactorizations
 
 import LinearAlgebra
-using LinearAlgebra: mul!, Diagonal, qr, Factorization, svd, require_one_based_indexing, Symmetric, eigen, eigen!, I, eigvals, adjoint, eigvecs, normalize!
+import LinearAlgebra: givens
+using LinearAlgebra: mul!, Diagonal, qr, Factorization, svd, require_one_based_indexing, Symmetric, eigen, eigen!, I, eigvals, adjoint, eigvecs, normalize!, AbstractRotation
 
 export 
     # symplectic stuff
     Symplectic, issymplectic, symplecticform, BlockForm, PairForm, randsymplectic,
+    # symplectic givens
+    givens, SymplecticGivens,
     # polar decomposition
     polar, Polar,
     # takagi/autonne decomposition
@@ -18,6 +21,8 @@ export
 include("form.jl")
 
 include("symplectic.jl")
+
+include("givens.jl")
 
 include("polar.jl")
 
