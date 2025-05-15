@@ -72,7 +72,7 @@
             @test G[i,j] == GMat[i,j] && G[j,i] == GMat[j,i]
             @test G[i] == GMat[i] && G[j] == GMat[j] && G[ind] == GMat[ind]
 
-            Z = zeros(Float64, 2n, 2n)
+            Z = rand(Float64, 2n, 2n)
             SZ = Symplectic(form, copy(Z))
             copyto!(Z, G)
             copyto!(SZ, G)
