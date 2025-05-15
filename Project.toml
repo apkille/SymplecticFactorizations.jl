@@ -1,7 +1,7 @@
 name = "SymplecticFactorizations"
 uuid = "7425e8e4-4cde-4e45-9b2f-a15679260f9b"
 authors = ["Andrew Kille"]
-version = "0.1.6"
+version = "0.1.7-dev"
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
