@@ -1,5 +1,9 @@
 # News
 
+## v0.1.7 - dev
+
+- **(fix)** `Base.copyto!` methods for `SymplecticGivens` types now copy over zeros.
+
 ## v0.1.6 - 2025-04-19
 
 - Add symplectic Givens support.

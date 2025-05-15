@@ -150,6 +150,7 @@ Base.copy(x::SymplecticGivens) = SymplecticGivens(x.form, copy(x.k), copy(x.c), 
     LinearAlgebra.require_one_based_indexing(dest)
     size(dest, 1) == size(dest, 2) || throw(ArgumentError("cannot copy a SymplecticGivens object to a non-square matrix."))
     n, k, c, s = (src.form).n, src.k, src.c, src.s
+    fill!(dest, zero(c))
     @inbounds for i in Base.OneTo(n)
         if i == k
             dest[i,i] = c
@@ -166,6 +167,7 @@ end
     LinearAlgebra.require_one_based_indexing(dest)
     size(dest, 1) == size(dest, 2) || throw(ArgumentError("cannot copy a SymplecticGivens object to a non-square matrix."))
     n, k, c, s = (src.form).n, src.k, src.c, src.s
+    fill!(dest, zero(c))
     @inbounds for i in Base.OneTo(n)
         if i == k
             dest[2i-1,2i-1] = c
