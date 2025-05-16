@@ -161,6 +161,7 @@ I_{k-1} &    &         &         &   & \\
         &    & I_{n-k} &         &   & \\
         &    &         & I_{k-1} &   & \\
         & -s &         &         & c & \\
+        &    &         &         &   & I_{n-k}
 \end{bmatrix}
 ```
 where `c`, `s` denote `cos(θ)` and `sin(θ)`, respectively. The `SymplecticGivens` type, which is a sparse representation of a symplectic Givens transformation, can be called with `givens(form, k, θ)`, where `form` can be either an object of type `BlockForm` or `PairForm`. Stdlib array operations are supported.
