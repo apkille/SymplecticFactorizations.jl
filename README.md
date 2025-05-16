@@ -150,6 +150,53 @@ julia> F.O * D * F.Q # == S
   0.00544102   0.618132  0.493417  -0.35965
 ```
 
+## `SymplecticGivens` type
+
+A symplectic Givens transformation `G(k,θ)` is defined by the block-ordering matrix as
+
+```math
+\begin{bmatrix}
+I_{k-1} &    &         &         &   & \\
+        & c  &         &         & s & \\
+        &    & I_{n-k} &         &   & \\
+        &    &         & I_{k-1} &   & \\
+        & -s &         &         & c & \\
+\end{bmatrix}
+```
+where `c`, `s` denote `cos(θ)` and `sin(θ)`, respectively. The `SymplecticGivens` type, which is a sparse representation of a symplectic Givens transformation, can be called with `givens(form, k, θ)`, where `form` can be either an object of type `BlockForm` or `PairForm`. Stdlib array operations are supported.
+
+```julia
+julia> G = givens(BlockForm(3), 2, pi/4)
+SymplecticGivens{BlockForm{Int64}, Int64, Float64}(BlockForm(3), 2, 0.7071067811865476, 0.7071067811865475)
+
+julia> Matrix(G)
+6×6 Matrix{Float64}:
+ 1.0   0.0       0.0  0.0  0.0       0.0
+ 0.0   0.707107  0.0  0.0  0.707107  0.0
+ 0.0   0.0       1.0  0.0  0.0       0.0
+ 0.0   0.0       0.0  1.0  0.0       0.0
+ 0.0  -0.707107  0.0  0.0  0.707107  0.0
+ 0.0   0.0       0.0  0.0  0.0       1.0
+
+julia> Matrix(G) * G
+6×6 Matrix{Float64}:
+ 1.0   0.0          0.0  0.0  0.0          0.0
+ 0.0   2.22045e-16  0.0  0.0  1.0          0.0
+ 0.0   0.0          1.0  0.0  0.0          0.0
+ 0.0   0.0          0.0  1.0  0.0          0.0
+ 0.0  -1.0          0.0  0.0  2.22045e-16  0.0
+ 0.0   0.0          0.0  0.0  0.0          1.0
+
+julia> Matrix(G * G)
+6×6 Matrix{Float64}:
+ 1.0   0.0          0.0  0.0  0.0          0.0
+ 0.0   2.22045e-16  0.0  0.0  1.0          0.0
+ 0.0   0.0          1.0  0.0  0.0          0.0
+ 0.0   0.0          0.0  1.0  0.0          0.0
+ 0.0  -1.0          0.0  0.0  2.22045e-16  0.0
+ 0.0   0.0          0.0  0.0  0.0          1.0
+
+julia> 
 ## Quick Benchmarks
 
 ### 
