@@ -139,3 +139,134 @@ Base.copy(x::SymplecticHouseholder) = SymplecticHouseholder(x.form, copy(x.k), c
     copyto!(@view(dest[n+k:2n,n+k:2n]), P)
     return dest
 end
+@inline function Base.copyto!(dest::AbstractMatrix, src::SymplecticHouseholder{F,N,T}) where {F<:PairForm,N<:Int,T}
+    LinearAlgebra.require_one_based_indexing(dest)
+    size(dest, 1) == size(dest, 2) || throw(ArgumentError("cannot copy a SymplecticHouseholder object to a non-square matrix."))
+    n, k, P = (src.form).n, src.k, src.P
+    tP = eltype(P)
+    @inbounds for i in Base.OneTo(k-1)
+        @inbounds for j in Base.OneTo(n)
+            if i == j
+                dest[2i-1,2j-1] = oneunit(tP)
+                dest[2i,2j-1] = zero(tP)
+                dest[2i-1,2j] = zero(tP)
+                dest[2i,2j] = oneunit(tP)
+            else
+                dest[2i-1,2j-1] = zero(tP)
+                dest[2i,2j-1] = zero(tP)
+                dest[2i-1,2j] = zero(tP)
+                dest[2i,2j] = zero(tP)
+            end
+        end
+    end
+    @inbounds for i in Base.OneTo(n-k+1)
+        @inbounds for j in Base.OneTo(n-k+1)
+            dest[2(i+k-1)-1, 2(j+k-1)-1] = P[i,j]
+            dest[2(i+k-1), 2(j+k-1)] = P[i,j]
+            dest[2(i+k-1)-1, 2(j+k-1)] = zero(tP)
+            dest[2(i+k-1), 2(j+k-1)-1] = zero(tP)
+        end
+    end
+    return dest
+end
+
+@inline function LinearAlgebra.lmul!(x::SymplecticHouseholder{F,N,T}, y::AbstractMatrix) where {F<:BlockForm,N<:Int,T}
+    LinearAlgebra.require_one_based_indexing(y)
+    size(y, 1) == size(y, 2) || throw(ArgumentError("cannot compute the matrix product between a SymplecticHouseholder object and a non-square matrix."))
+    n, k, P = x.form.n, x.k, x.P
+    @views begin
+        ytop = view(y, k:n, :)
+        ybot = view(y, n+k:2n, :)
+        mul!(ytop, P, ytop)
+        mul!(ybot, P, ybot)
+    end
+    return y
+end
+@inline function LinearAlgebra.lmul!(x::SymplecticHouseholder{F,N,T}, y::AbstractVector) where {F<:BlockForm,N<:Int,T}
+    LinearAlgebra.require_one_based_indexing(y)
+    n, k, P = x.form.n, x.k, x.P
+    @views begin
+        ytop = view(y, k:n)
+        ybot = view(y, n+k:2n)
+        mul!(ytop, P, ytop)
+        mul!(ybot, P, ybot)
+    end
+    return y
+end
+@inline function LinearAlgebra.rmul!(x::AbstractMatrix, y::SymplecticHouseholder{F,N,T}) where {F<:BlockForm,N<:Int,T}
+    LinearAlgebra.require_one_based_indexing(x)
+    size(y, 1) == size(y, 2) || throw(ArgumentError("cannot compute the matrix product between a SymplecticHouseholder object and a non-square matrix."))
+    n, k, P = y.form.n, y.k, y.P
+    @views begin
+        xtop = view(x, :, k:n)
+        xbot = view(x, :, n+k:2n)
+        mul!(xtop, xtop, P)
+        mul!(xbot, xbot, P)
+    end
+    return x
+end
+@inline function LinearAlgebra.lmul!(x::SymplecticHouseholder{F,N,T}, y::AbstractMatrix) where {F<:PairForm,N<:Int,T}
+    LinearAlgebra.require_one_based_indexing(y)
+    size(y, 1) == size(y, 2) || throw(ArgumentError("cannot compute the matrix product between a SymplecticHouseholder object and a non-square matrix."))
+    n, k, P = x.form.n, x.k, x.P
+    @inbounds for i in Base.OneTo(n-k+1)
+        @views yq = y[2(i+k-1)-1, :]
+        @views yp = y[2(i+k-1), :]
+        tq, tp = zero(yq), tp = zero(yp)
+        @inbounds for j in Base.OneTo(n-k+1)
+            @views yjq = y[2(j+k-1)-1, :]
+            @views yjp = y[2(j+k-1), :]
+            tq .+= P[i,j] .* yjq
+            tp .+= P[i,j] .* yjp
+        end
+        yq .= tq
+        yp .= tp
+    end
+    return y
+end
+@inline function LinearAlgebra.lmul!(x::SymplecticHouseholder{F,N,T}, y::AbstractVector) where {F<:PairForm,N<:Int,T}
+    LinearAlgebra.require_one_based_indexing(y)
+    n, k, P = x.form.n, x.k, x.P
+    @inbounds for i in Base.OneTo(n-k+1)
+        tq, tp = zero(eltype(y)), zero(eltype(y))
+        for j in Base.OneTo(n - k + 1)
+            tq += P[i,j] * y[2(j+k-1)-1]
+            tp += P[i,j] * y[2(j+k-1)]
+        end
+        y[2(i+k-1)-1] = tq
+        y[2(i+k-1)] = tp
+    end
+    return y
+end
+@inline function LinearAlgebra.rmul!(x::AbstractMatrix, y::SymplecticHouseholder{F,N,T}) where {F<:PairForm,N<:Int,T}
+    LinearAlgebra.require_one_based_indexing(x)
+    size(x, 1) == size(x, 2) || throw(ArgumentError("cannot compute the matrix product between a SymplecticHouseholder object and a non-square matrix."))
+    n, k, P = y.form.n, y.k, y.P
+    @inbounds for j in Base.OneTo(n - k + 1)
+        @views xq = x[:, 2(j+k-1)-1]
+        @views xp = x[:, 2(j+k-1)]
+        tq, tp = zero(xq), zero(xp)
+        @inbounds for i in Base.OneTo(n-k+1)
+            @views xiq = x[:, 2(i+k-1)-1]
+            @views xip = x[:, 2(i+k-1)]
+            tq .+= xiq .* P[i,j]
+            tp .+= xip .* P[i,j]
+        end
+        xq .= tq
+        xp .= tp
+    end
+    return x
+end
+Base.:(*)(x::SymplecticHouseholder, y::SymplecticHouseholder) = x.k == y.k ? SymplecticHouseholder(x.form, x.k, x.P * y.P) : Symplectic(x.form, Matrix(x) * Matrix(y))
+Base.:(*)(x::SymplecticHouseholder, y::Symplectic) = x.form == y.form ? Symplectic(x.form, x * y.data) : x * y.data
+Base.:(*)(x::Symplectic, y::SymplecticHouseholder) = x.form == y.form ? Symplectic(x.form, x.data * y) : x.data * y
+Base.:(/)(x::SymplecticHouseholder, y::SymplecticHouseholder) = x.k == y.k ? SymplecticHouseholder(x.form, x.k, x.P / y.P) : Symplectic(x.form, Matrix(x) / Matrix(y))
+Base.:(/)(x::SymplecticHouseholder, y::Symplectic) = x.form == y.form ? Symplectic(x.form, x * inv(y.data)) : x * inv(y.data)
+Base.:(/)(x::Symplectic, y::SymplecticHouseholder) = x.form == y.form ? Symplectic(x.form, x.data * inv(y)) : x.data * inv(y)
+Base.:(/)(x::SymplecticHouseholder, y::AbstractMatrix) = x * inv(y)
+Base.:(/)(x::AbstractMatrix, y::SymplecticHouseholder) = x * inv(y)
+Base.:(\)(x::SymplecticHouseholder, y::SymplecticHouseholder) = x.k == y.k ? SymplecticHouseholder(x.form, x.k, x.P \ y.P) : Symplectic(x.form, Matrix(x) \ Matrix(y))
+Base.:(\)(x::SymplecticHouseholder, y::Symplectic) = x.form == y.form ? Symplectic(x.form, inv(x) * y.data) : inv(x) * y.data
+Base.:(\)(x::Symplectic, y::SymplecticHouseholder) = x.form == y.form ? Symplectic(x.form, inv(x.data) * y) : inv(x.data) * y
+Base.:(\)(x::SymplecticHouseholder, y::AbstractMatrix) = inv(x) * y
+Base.:(\)(x::AbstractMatrix, y::SymplecticHouseholder) = inv(x) * y
