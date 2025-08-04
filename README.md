@@ -1,5 +1,7 @@
 # SymplecticFactorizations
 
+>[!Warning] This package is deprecated in favor of the general purpose [SymplecticMatrices.jl](github.com/apkille/SymplecticMatrices.jl) package. All of the code from SymplecticFactorizations.jl has been copied into SymplecticMatrices.jl and is currently being developed.
+
 [![Build status (Github Actions)](https://github.com/apkille/SymplecticFactorizations.jl/workflows/CI/badge.svg)](https://github.com/apkille/SymplecticFactorizations.jl/actions)
 [![codecov](https://codecov.io/github/apkille/SymplecticFactorizations.jl/graph/badge.svg?token=JWMOD4FY6P)](https://codecov.io/github/apkille/SymplecticFactorizations.jl)
 
