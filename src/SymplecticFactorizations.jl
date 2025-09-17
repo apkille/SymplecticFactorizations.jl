@@ -9,6 +9,8 @@ export
     Symplectic, issymplectic, symplecticform, BlockForm, PairForm, randsymplectic,
     # symplectic givens
     givens, SymplecticGivens,
+    # symplectic householder
+    householder, SymplecticHouseholder,
     # polar decomposition
     polar, Polar,
     # takagi/autonne decomposition
@@ -23,6 +25,8 @@ include("form.jl")
 include("symplectic.jl")
 
 include("givens.jl")
+
+include("householder.jl")
 
 include("polar.jl")
 
